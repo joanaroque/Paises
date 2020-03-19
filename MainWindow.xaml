@@ -6,12 +6,9 @@
         xmlns:local="clr-namespace:Paises"
         mc:Ignorable="d"
         Title="MainWindow" Height="700" Width="1150">
-    <Grid Cursor="Arrow" RenderTransformOrigin="0.5,0.5">
-        <Grid.BindingGroup>
-            <BindingGroup/>
-        </Grid.BindingGroup>
-        <ProgressBar x:Name="pb" HorizontalAlignment="Left" Height="42" Margin="651,600,0,0" VerticalAlignment="Top" Width="400"/>
-        <ListView HorizontalAlignment="Left" Height="370" Margin="61,111,0,0" VerticalAlignment="Top" Width="990">
+    <Grid Cursor="Arrow" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,19">
+        <ProgressBar x:Name="pb" HorizontalAlignment="Left" Height="42" Margin="687,570,0,0" VerticalAlignment="Top" Width="364"/>
+        <ListView Name="listView" HorizontalAlignment="Left" Height="370" Margin="61,111,0,0" VerticalAlignment="Top" Width="990">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Width="140" DisplayMemberBinding="{Binding Name}">Name</GridViewColumn>
@@ -28,7 +25,7 @@
         <ComboBox x:Name="cbCountry" HorizontalAlignment="Left" Margin="61,31,0,0" VerticalAlignment="Top" Width="363" Height="46" FontSize="20" SelectionChanged="ComboBox_SelectionChanged"/>
         <Label Content="Country" HorizontalAlignment="Left" Margin="429,31,0,0" VerticalAlignment="Top" Height="46" Width="95" FontSize="20" FontWeight="Bold"/>
         <Label x:Name="lblResult" Content="Label" HorizontalAlignment="Left" Margin="258,505,0,0" VerticalAlignment="Top" Height="42" Width="360" FontSize="20"/>
-        <Label x:Name="lblStatus" Content="Label" HorizontalAlignment="Left" Margin="64,600,0,0" VerticalAlignment="Top" Height="42" Width="360" FontSize="20"/>
+        <Label x:Name="lblStatus" Content="Label" HorizontalAlignment="Left" Margin="61,570,0,0" VerticalAlignment="Top" Height="42" Width="527" FontSize="18"/>
 
 
     </Grid>
