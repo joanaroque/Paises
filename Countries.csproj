@@ -92,6 +92,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Services\APIService.cs" />
+    <Compile Include="Services\DataService.cs" />
+    <Compile Include="Services\DialogService.cs" />
+    <Compile Include="Services\NetworkService.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -106,10 +110,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Modelos\Currency.cs" />
-    <Compile Include="Modelos\Language.cs" />
-    <Compile Include="Modelos\RootObject.cs" />
-    <Compile Include="Modelos\Translations.cs" />
+    <Compile Include="Models\Currency.cs" />
+    <Compile Include="Models\Language.cs" />
+    <Compile Include="Models\Response.cs" />
+    <Compile Include="Models\RootObject.cs" />
+    <Compile Include="Models\Translations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -137,7 +142,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Imagens\" />
+    <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">

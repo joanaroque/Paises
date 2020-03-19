@@ -1,4 +1,4 @@
-﻿namespace Paises.Modelos
+﻿namespace Paises.Models
 {
     using System;
     using System.Collections.Generic;
