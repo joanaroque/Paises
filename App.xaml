@@ -1,7 +1,7 @@
-﻿<Application x:Class="Paises.App"
+﻿<Application x:Class="Countries.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Paises"
+             xmlns:local="clr-namespace:Countries"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          

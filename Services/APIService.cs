@@ -1,7 +1,7 @@
-﻿namespace Paises.Services
+﻿namespace Countries.Services
 {
     using Newtonsoft.Json;
-    using Paises.Models;
+    using Models;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -11,22 +11,19 @@
     public class APIService
     {
         //devolver uma Response, vai buscar as taxas
-        public async Task<Response> GetCountries(string urlBase, string controller)
+        public async Task<Response> GetCountries(string urlBase, string apiPath)
         {
             //Sempre try
             try
             {
-                //carrega paises, API, para fazer ligação externa
-                var country = new HttpClient();
+                var client = new HttpClient(); // cliente prepara chamada a um servidor (cliente é alguem que pede algo)
 
-                country.BaseAddress = new Uri(urlBase);
+                client.BaseAddress = new Uri(urlBase); // "Qual é a morada que eu vou chamar? (que é sempre um URI)"
 
-                var response = await country.GetAsync(controller);
+                var response = await client.GetAsync(apiPath); // para este clt configurado previamente, vai buscar a info dos clints de forma assincrona
 
-                //este objeto fica a espera da resposta que vem de cima
-                //o seu conteudo lido como uma string
+                //le a resposta e converte a de binario para string 
                 var result = await response.Content.ReadAsStringAsync();
-
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -37,9 +34,8 @@
 
                     };
                 }
-                //se chegou aqui, correu bem
-                //recebo o json, converte e pomo lo numa lista de dados do tipo Rate
-                var countries = JsonConvert.DeserializeObject<RootObject>(result);
+
+                var countries = JsonConvert.DeserializeObject<List<RootObject>>(result, new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
 
                 return new Response
                 {

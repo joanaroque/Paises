@@ -92,10 +92,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Covid19.xaml.cs">
+      <DependentUpon>Covid19.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Covid19Data.cs" />
     <Compile Include="Services\APIService.cs" />
     <Compile Include="Services\DataService.cs" />
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\NetworkService.cs" />
+    <Page Include="Covid19.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

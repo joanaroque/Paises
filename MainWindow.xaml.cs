@@ -1,12 +1,11 @@
-﻿namespace Paises
+﻿namespace Countries
 {
     using Models;
-    using System.Windows;
+    using Services;
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Services;
-    using System.Data;
+    using System.Windows;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -14,13 +13,11 @@
     public partial class MainWindow : Window
     {
         #region Attributes
-        private RootObject Countries;
+        private List<RootObject> Countries;
         private NetworkService NetworkService;
         private APIService APIService;
         private DialogService DialogService;
         private DataService DataServices;
-        DataTable dt = new DataTable();
-        DataRow dr;
 
         #endregion
 
@@ -28,7 +25,6 @@
         {
             InitializeComponent();
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            Countries = new RootObject();
             NetworkService = new NetworkService();
             APIService = new APIService();
             DialogService = new DialogService();
@@ -57,47 +53,20 @@
                 load = true;
             }
 
-           
+            if (Countries.Count == 0) //lista de paises nao foi carregada
+            {
+                lblResult.Content = "No internet connection" +
+                    Environment.NewLine + "and the countries were not previously loaded." +
+                    Environment.NewLine + "Try it later.";
 
-            dt.Columns.Add("Name");
-            dt.Columns.Add("Capital");
-            dt.Columns.Add("Region");
-            dt.Columns.Add("Subregion");
-            dt.Columns.Add("Population");
-            dt.Columns.Add("Gini");
-            dt.Columns.Add("Flag");
-            dr = dt.NewRow();
-            dr["Name"] = Countries.Name;
-            dr["Capital"] = Countries.Capital;
-            dr["Region"] = Countries.Region;
-            dr["Subregion"] = Countries.Subregion;
-            dr["Population"] = Countries.Population;
-            dr["Gini"] = Countries.Gini;
-            dr["Flag"] = Countries.Flag;
-            dt.Rows.Add(dr);
-            dt.AcceptChanges();
-            listView.ItemsSource = dt.DefaultView;
+                lblStatus.Content = "First boot should have internet connection.";
 
-
-            //if (Countries.Equals(string.Empty)) //lista de taxas nao foi carregada
-            //{
-            //    lblResult.Content = "No internet connection" +
-            //        Environment.NewLine + "and the countries were not previously loaded." +
-            //        Environment.NewLine + "Try it later.";
-
-            //    lblResult.Content = "First boot should have internet connection.";
-
-            //    return;
-            //}
-
-            //cbOrigem.DataSource = Rates;
-            //cbOrigem.DisplayMember = "Name"; // Isto *** em vez do override
-
-            ////corrige bug da microsoft
-            //cbDestino.BindingContext = new BindingContext();
-
-            //cbDestino.DataSource = Rates;
-            //cbDestino.DisplayMember = "Name";
+                return;
+            }
+            
+                cbCountry.ItemsSource = Countries;
+                cbCountry.DisplayMemberPath = "Name";
+            
 
             pb.Value = 100;
 
@@ -105,12 +74,11 @@
 
             if (load) // API carregou
             {
-                lblStatus.Content = string.Format($"Countries downloaded from the internet in" +
-                    $" {DateTime.Now}");
+                lblStatus.Content = string.Format($"Countries downloaded from the internet in {DateTime.Now}");
             }
             else
             {
-                lblStatus.Content = string.Format("Countries downloaded from Data Base.");
+                lblStatus.Content = "Countries downloaded from Data Base.";
             }
 
             pb.Value = 100;
@@ -121,25 +89,40 @@
             pb.Value = 0;
 
             /*onde está o endereço base da API
-            vai buscar o controlador
+            vai buscar a apiPath
             enquanto carrega as taxas a aplicação tem que estar a correr á mesma*/
-            var response = await APIService.GetCountries("http://restcountries.eu/rest/v2/all", "/api/countries");
+            var response = await APIService.GetCountries("http://restcountries.eu/rest/v2/", "all");
 
-            Countries = (RootObject)response.Result; // vai buscar a referencia da lista
+            Countries = (List<RootObject>)response.Result; // vai buscar a referencia da lista
 
             DataServices.DeleteData();
 
-           // DataServices.SaveData(Countries);
+            DataServices.SaveData(Countries);
         }
 
         private void LoadLocalCountries()
         {
-          //  Countries = DataServices.GetData();
+            Countries = DataServices.GetData();
         }
 
-        private void ComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void CbCountry_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            
+            foreach (var country in Countries)
+            {
+                lblName.Content = country.Name;
+                lblCapital.Content = country.Capital;
+                lblRegion.Content = country.Region;
+                lblSubregion.Content = country.Subregion;
+                lblPopulation.Content = country.Population;
+                lblGini.Content = country.Gini;
+                lblFlag.Content = country.Flag; // TODO se nao houver bandeira, mostrar uma imagem de erro
+            }
+        }
+        private void btnCovid_Click(object sender, RoutedEventArgs e)
+        {
+            Covid19 corona = new Covid19();
+            corona.Show();
+            this.Close();
         }
     }
 }

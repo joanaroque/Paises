@@ -1,4 +1,4 @@
-﻿namespace Paises.Services
+﻿namespace Countries.Services
 {
     using Models;
     using System.Net;

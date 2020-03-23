@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Paises.Properties
+namespace Countries.Properties
 {
 
 

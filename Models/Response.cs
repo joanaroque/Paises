@@ -1,4 +1,4 @@
-﻿namespace Paises.Models
+﻿namespace Countries.Models
 {
     public class Response
     {
@@ -6,7 +6,6 @@
 
         public string Message { get; set; }
 
-        public object Result { get; set; } // corre tudo bem,
-        //guardo um objeto , pode ser uma ligaçao bem feita, pode ser uma rate, qlqlr coisa!!!
+        public object Result { get; set; } 
     }
 }

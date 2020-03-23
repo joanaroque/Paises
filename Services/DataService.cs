@@ -1,8 +1,9 @@
-﻿namespace Paises.Services
+﻿namespace Countries.Services
 {
     using Models;
     using System;
     using System.Collections.Generic;
+    using System.Data.SqlClient;
     using System.Data.SQLite;
     using System.IO;
     public class DataService
@@ -44,16 +45,24 @@
             }
         }
         public void SaveData(List<RootObject> Countries)
-        {
+        {  
             try
             {
                 foreach (var country in Countries)
                 {
-                    string sql = string.Format("insert into Rates (Name, Capital, Region, Subregion, Population, Gini, Flag)" +
-                        " values('{0}', '{1}', '{2}', '{3}', {4}, {5}, '{6}')", country.Name, country.Capital, country.Region, country.Subregion,
-                        country.Population, country.Gini, country.Flag);
+                    string sql = string.Format("insert into Countries (Name, Capital, Region, Subregion, Population, Gini, Flag)" +
+                        " values (@Name, @Capital, @Region, @Subregion, @Population, @Gini, @Flag)");
 
                     command = new SQLiteCommand(sql, connection);
+
+                    command.Parameters.Add(new SQLiteParameter("@Name", country.Name));
+                    command.Parameters.Add(new SQLiteParameter("@Capital", country.Capital));
+                    command.Parameters.Add(new SQLiteParameter("@Region", country.Region));
+                    command.Parameters.Add(new SQLiteParameter("@Subregion", country.Subregion));
+                    command.Parameters.Add(new SQLiteParameter("@Population", country.Population));
+                    command.Parameters.Add(new SQLiteParameter("@Gini", country.Gini));
+                    command.Parameters.Add(new SQLiteParameter("@Flag", country.Flag));
+
                     command.ExecuteNonQuery();
                 }
                 connection.Close();
@@ -85,7 +94,7 @@
                         Region = (string)reader["Region"],
                         Subregion = (string)reader["Subregion"],
                         Population = (int)reader["Population"],
-                        Gini = (double)reader["Gini"],
+                        Gini = (double)reader["Gini"],  
                         Flag = (string)reader["Flag"]
                     });
                 }
