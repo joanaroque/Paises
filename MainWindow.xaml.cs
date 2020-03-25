@@ -14,10 +14,13 @@
     {
         #region Attributes
         private List<RootObject> Countries;
-        private NetworkService NetworkService;
-        private APIService APIService;
-        private DialogService DialogService;
-        private DataService DataServices;
+        // private Currency currency;
+        //private Language language;
+        //private Translations translations;
+        private NetworkService networkService;
+        private APIService apiService;
+        private DialogService dialogService;
+        private DataService dataServices;
 
         #endregion
 
@@ -25,10 +28,10 @@
         {
             InitializeComponent();
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            NetworkService = new NetworkService();
-            APIService = new APIService();
-            DialogService = new DialogService();
-            DataServices = new DataService();
+            networkService = new NetworkService();
+            apiService = new APIService();
+            dialogService = new DialogService();
+            dataServices = new DataService();
 
             LoadCountries();
         }
@@ -39,7 +42,7 @@
 
             lblResult.Content = "Update Countries...";
 
-            var connection = NetworkService.CheckConnection();
+            var connection = networkService.CheckConnection();
 
             if (!connection.IsSuccess)
             {
@@ -63,10 +66,10 @@
 
                 return;
             }
-            
-                cbCountry.ItemsSource = Countries;
-                cbCountry.DisplayMemberPath = "Name";
-            
+
+            cbCountry.ItemsSource = Countries;
+            cbCountry.DisplayMemberPath = "Name";
+
 
             pb.Value = 100;
 
@@ -91,18 +94,18 @@
             /*onde está o endereço base da API
             vai buscar a apiPath
             enquanto carrega as taxas a aplicação tem que estar a correr á mesma*/
-            var response = await APIService.GetCountries("http://restcountries.eu/rest/v2/", "all");
+            var response = await apiService.GetCountries("http://restcountries.eu/rest/v2/", "all");
 
             Countries = (List<RootObject>)response.Result; // vai buscar a referencia da lista
 
-            DataServices.DeleteData();
+            dataServices.DeleteData();
 
-            DataServices.SaveData(Countries);
+            dataServices.SaveData(Countries);
         }
 
         private void LoadLocalCountries()
         {
-            Countries = DataServices.GetData();
+            Countries = dataServices.GetData();
         }
 
         private void CbCountry_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -122,6 +125,13 @@
         {
             Covid19 corona = new Covid19();
             corona.Show();
+            this.Close();
+        }
+
+        private void btnMore_Click(object sender, RoutedEventArgs e)
+        {
+            MoreInformation moreInfo = new MoreInformation();
+            moreInfo.Show();
             this.Close();
         }
     }

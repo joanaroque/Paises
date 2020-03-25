@@ -5,29 +5,32 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Countries"
         mc:Ignorable="d"
-        Title="Countries of the world statistics" Height="700" Width="1091.5">
+        Title="Countries of the world statistics" Height="700" Width="1050">
     <Grid Cursor="Arrow" RenderTransformOrigin="0.5,0.5" Margin="0,0,2,19">
-        <ProgressBar x:Name="pb" HorizontalAlignment="Left" Height="42" Margin="687,570,0,0" VerticalAlignment="Top" Width="364"/>
+        <ProgressBar x:Name="pb" HorizontalAlignment="Left" Height="42" Margin="664,570,0,0" VerticalAlignment="Top" Width="364"/>
         <Label x:Name="lblResult" Content="Label" HorizontalAlignment="Left" Margin="102,466,0,0" VerticalAlignment="Top" Height="92" Width="739" FontSize="18"/>
         <Label x:Name="lblStatus" Content="Label" HorizontalAlignment="Left" Margin="61,570,0,0" VerticalAlignment="Top" Height="42" Width="527" FontSize="18"/>
         <ComboBox x:Name="cbCountry" HorizontalAlignment="Left" Margin="61,31,0,0" VerticalAlignment="Top" Width="620" Height="46" FontSize="20" SelectionChanged="CbCountry_SelectionChanged"/>
         <Label Content="Country" HorizontalAlignment="Left" Margin="700,31,0,0" VerticalAlignment="Top" Height="37" Width="95" FontSize="20" FontWeight="Bold"/>
-        <Label x:Name="lblName" Content="" HorizontalAlignment="Left" Margin="675,114,0,0" VerticalAlignment="Top" Width="400" FontSize="18"/>
-        <Label x:Name="lblCapital" Content="" HorizontalAlignment="Left" Margin="675,158,0,0" VerticalAlignment="Top" Width="300" FontSize="18"/>
-        <Label x:Name="lblRegion" Content="" HorizontalAlignment="Left" Margin="675,204,0,0" VerticalAlignment="Top" Width="300" FontSize="18"/>
-        <Label x:Name="lblSubregion" Content="" HorizontalAlignment="Left" Margin="675,248,0,0" VerticalAlignment="Top" Width="300" FontSize="18"/>
-        <Label x:Name="lblPopulation" Content="" HorizontalAlignment="Left" Margin="675,294,0,0" VerticalAlignment="Top" Width="300" FontSize="18"/>
-        <Label x:Name="lblGini" Content="" HorizontalAlignment="Left" Margin="675,338,0,0" VerticalAlignment="Top" Width="200" FontSize="18"/>
-        <Label x:Name="lblFlag" Content="" HorizontalAlignment="Left" Margin="675,384,0,0" VerticalAlignment="Top" Width="300" FontSize="18"/>
-        <Label Content="Name:" HorizontalAlignment="Left" Margin="575,114,0,0" VerticalAlignment="Top" Width="60" FontSize="18"/>
-        <Label Content="Capital:" HorizontalAlignment="Left" Margin="575,158,0,0" VerticalAlignment="Top" Width="70" FontSize="18"/>
-        <Label Content="Region:" HorizontalAlignment="Left" Margin="575,204,0,0" VerticalAlignment="Top" Width="70" FontSize="18"/>
-        <Label Content="Subregion:" HorizontalAlignment="Left" Margin="575,248,0,0" VerticalAlignment="Top" Width="100" FontSize="18"/>
-        <Label Content="Population:" HorizontalAlignment="Left" Margin="575,294,0,0" VerticalAlignment="Top" Width="110" FontSize="18"/>
-        <Label Content="Gini:" HorizontalAlignment="Left" Margin="575,338,0,0" VerticalAlignment="Top" Width="50" FontSize="18"/>
-        <Label Content="Flag:" HorizontalAlignment="Left" Margin="575,384,0,0" VerticalAlignment="Top" Width="60" FontSize="18"/>
-        <StackPanel HorizontalAlignment="Left" Height="48" Margin="800,20,0,0" VerticalAlignment="Top" Width="266">
-            <Button Name="btnCovid" Content="Click here for Covid19 statistics" Click="btnCovid_Click" Height="50" FontSize="18"/>
+        <Label x:Name="lblName" Content="" HorizontalAlignment="Left" Margin="664,97,0,0" VerticalAlignment="Top" Width="400" FontSize="18"/>
+        <Label x:Name="lblCapital" Content="" HorizontalAlignment="Left" Margin="664,141,0,0" VerticalAlignment="Top" Width="300" FontSize="18"/>
+        <Label x:Name="lblRegion" Content="" HorizontalAlignment="Left" Margin="664,187,0,0" VerticalAlignment="Top" Width="300" FontSize="18"/>
+        <Label x:Name="lblSubregion" Content="" HorizontalAlignment="Left" Margin="664,231,0,0" VerticalAlignment="Top" Width="300" FontSize="18"/>
+        <Label x:Name="lblPopulation" Content="" HorizontalAlignment="Left" Margin="664,278,0,0" VerticalAlignment="Top" Width="300" FontSize="18"/>
+        <Label x:Name="lblGini" Content="" HorizontalAlignment="Left" Margin="664,322,0,0" VerticalAlignment="Top" Width="200" FontSize="18"/>
+        <Label x:Name="lblFlag" Content="" HorizontalAlignment="Left" Margin="664,368,0,0" VerticalAlignment="Top" Width="300" FontSize="18"/>
+        <Label Content="Name:" HorizontalAlignment="Left" Margin="564,97,0,0" VerticalAlignment="Top" Width="60" FontSize="18"/>
+        <Label Content="Capital:" HorizontalAlignment="Left" Margin="564,141,0,0" VerticalAlignment="Top" Width="70" FontSize="18"/>
+        <Label Content="Region:" HorizontalAlignment="Left" Margin="564,187,0,0" VerticalAlignment="Top" Width="70" FontSize="18"/>
+        <Label Content="Subregion:" HorizontalAlignment="Left" Margin="564,231,0,0" VerticalAlignment="Top" Width="100" FontSize="18"/>
+        <Label Content="Population:" HorizontalAlignment="Left" Margin="564,278,0,0" VerticalAlignment="Top" Width="110" FontSize="18"/>
+        <Label Content="Gini:" HorizontalAlignment="Left" Margin="564,322,0,0" VerticalAlignment="Top" Width="50" FontSize="18"/>
+        <Label Content="Flag:" HorizontalAlignment="Left" Margin="564,368,0,0" VerticalAlignment="Top" Width="60" FontSize="18"/>
+        <StackPanel HorizontalAlignment="Left" Height="48" Margin="800,410,0,0" VerticalAlignment="Top" Width="200">
+            <Button x:Name="btnCovid" Content="See Covid19 statistics" Click="btnCovid_Click" Height="50" FontSize="18"/>
+        </StackPanel>
+        <StackPanel HorizontalAlignment="Left" Height="48" Margin="550,410,0,0" VerticalAlignment="Top" Width="100">
+            <Button x:Name="btnMore" Content="More info" Click="btnMore_Click" Height="50" FontSize="18"/>
         </StackPanel>
 
 

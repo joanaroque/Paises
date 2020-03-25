@@ -31,6 +31,36 @@
             DialogService = new DialogService();
             DataServices = new DataService();
 
+            LoadCovid19Data();
+        }
+
+        private async void LoadCovid19Data()
+        {
+            bool load;
+            var connection = NetworkService.CheckConnection();
+
+            if (!connection.IsSuccess)
+            {
+                LoadLocalCovid19Data();
+                load = false;
+            }
+
+            else
+            {
+                await LoadApiCountriesCovid19();
+                load = true;
+            }
+
+            if (Corona.Count == 0) //lista de dados de covid19 nao foi carregada
+            {
+                lblResult.Content = "No internet connection" +
+                    Environment.NewLine + "and the covid19 data were not previously loaded." +
+                    Environment.NewLine + "Try it later.";
+
+                lblStatus.Content = "First boot should have internet connection.";
+
+                return;
+            }
             PopulateLabels();
         }
 
@@ -43,34 +73,34 @@
        
         private async Task LoadApiCountriesCovid19()
         {
-            var response = await APIService.GetCountries("https://coronavirus-19-api.herokuapp.com/", "countries");
+            var response = await APIService.GetCovid19Data("https://coronavirus-19-api.herokuapp.com/", "countries");
 
             Corona = (List<Covid19Data>)response.Result; // vai buscar a referencia da lista
 
-            DataServices.DeleteData();
+            DataServices.DeleteDataCovid19();
 
-           // DataServices.SaveData(Corona);
+           DataServices.SaveDataCovid19(Corona);
 
         }   //TODO dependendo do pais escolhido, aparecem os dados desse mesmo pais, para escolher outro, volta para tras..
 
-        private void LoadLocalCountries()
+        private void LoadLocalCovid19Data()
         {
-          //  Corona = DataServices.GetData();
+           Corona = DataServices.GetDataCovid19();
         }
 
-        private void PopulateLabels() // TODO fazer toda este novo modelo!!!
+        private void PopulateLabels()
         {
-            foreach (var country in Corona) 
+            foreach (var covid19 in Corona)
             {
-                lblName.Content = country.Country;
-                lblCases.Content = country.Cases;
-                lblTodayCases.Content = country.TodayCases;
-                lblDeaths.Content = country.Deaths;
-                lblTodayDeaths.Content = country.TodayDeaths;
-                lblRecovered.Content = country.Recovered;
-                lblActive.Content = country.Active;
-                lblCritical.Content = country.Critical;
-                lblCasesPerOneMillion.Content = country.CasesPerOneMillion;
+                lblName.Content = covid19.Country;
+                lblCases.Content = covid19.Cases;
+                lblTodayCases.Content = covid19.TodayCases;
+                lblDeaths.Content = covid19.Deaths;
+                lblTodayDeaths.Content = covid19.TodayDeaths;
+                lblRecovered.Content = covid19.Recovered;
+                lblActive.Content = covid19.Active;
+                lblCritical.Content = covid19.Critical;
+                lblCasesPerOneMillion.Content = covid19.CasesPerOneMillion;
             }
         }
     }

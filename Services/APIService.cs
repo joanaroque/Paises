@@ -10,10 +10,8 @@
     using System.Threading.Tasks;
     public class APIService
     {
-        //devolver uma Response, vai buscar as taxas
         public async Task<Response> GetCountries(string urlBase, string apiPath)
         {
-            //Sempre try
             try
             {
                 var client = new HttpClient(); // cliente prepara chamada a um servidor (cliente é alguem que pede algo)
@@ -35,7 +33,7 @@
                     };
                 }
 
-                var countries = JsonConvert.DeserializeObject<List<RootObject>>(result, new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
+                var countries = JsonConvert.DeserializeObject<List<RootObject>>(result, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
                 return new Response
                 {
@@ -52,5 +50,46 @@
                 };
             }
         }
+
+        public async Task<Response> GetCovid19Data(string urlBase, string apiPath)
+        {
+            try
+            {
+                var client = new HttpClient(); 
+
+                client.BaseAddress = new Uri(urlBase); 
+
+                var response = await client.GetAsync(apiPath); 
+
+                var result = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new Response
+                    {
+                        IsSuccess = false,
+                        Message = result,
+
+                    };
+                }
+
+                var covid19 = JsonConvert.DeserializeObject<List<Covid19Data>>(result, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+
+                return new Response
+                {
+                    IsSuccess = true,
+                    Result = covid19
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    IsSuccess = false,
+                    Message = ex.Message,
+                };
+            }
+        }
     }
 }
+
