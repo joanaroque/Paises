@@ -7,7 +7,7 @@
     using System.Threading.Tasks;
     public class Currency
     {
-        public string Code { get; set; } // moedas
+        public string Code { get; set; } 
         public string Name { get; set; }
         public string Symbol { get; set; }
     }
