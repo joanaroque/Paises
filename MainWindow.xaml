@@ -3,10 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Countries"
-        xmlns:Properties="clr-namespace:Countries.Properties" x:Class="Countries.MainWindow"
+    x:Class="Countries.MainWindow"
         mc:Ignorable="d"
-        Title="Countries of the world statistics" Height="700" Width="1300" Loaded="Window_Loaded">
+        Title="Countries of the world statistics" Height="700" Width="1300">
     <Grid Cursor="Arrow" RenderTransformOrigin="0.5,0.5" Margin="0,0,2,19">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="569*"/>
@@ -15,44 +14,39 @@
         <ProgressBar x:Name="pb" HorizontalAlignment="Left" Height="42" Margin="67,570,0,0" VerticalAlignment="Top" Width="364" Grid.Column="1"/>
         <Label x:Name="lblResult" Content="Label" HorizontalAlignment="Left" Margin="30,478,0,0" VerticalAlignment="Top" Height="87" Width="494" FontSize="14"/>
         <Label x:Name="lblStatus" Content="*" HorizontalAlignment="Left" Margin="30,570,0,0" VerticalAlignment="Top" Height="42" Width="527" FontSize="14"/>
-        <Label Content="Country" HorizontalAlignment="Left" Margin="263,17,0,0" VerticalAlignment="Top" Height="37" Width="96" FontSize="20" FontWeight="Bold"/>
-        <Label x:Name="lblCapital" Content="" HorizontalAlignment="Left" Margin="270,70,0,0" VerticalAlignment="Top" Width="228" FontSize="12" Height="26"/>
-        <Label x:Name="lblRegion" Content="" HorizontalAlignment="Left" Margin="270,90,0,0" VerticalAlignment="Top" Width="228" FontSize="12" Height="26"/>
-        <Label x:Name="lblSubregion" Content="" HorizontalAlignment="Left" Margin="270,110,0,0" VerticalAlignment="Top" Width="228" FontSize="12" Height="26"/>
-        <Label x:Name="lblPopulation" Content="" HorizontalAlignment="Left" Margin="270,130,0,0" VerticalAlignment="Top" Width="228" FontSize="12" Height="26"/>
-        <Label x:Name="lblGini" Content="" HorizontalAlignment="Left" Margin="270,150,0,0" VerticalAlignment="Top" Width="228" FontSize="12" Height="26"/>
-        <Label x:Name="lblFlag" Content="" HorizontalAlignment="Left" Margin="270,170,0,0" VerticalAlignment="Top" Width="228" FontSize="12" Height="26"/>
-        <Label x:Name="lblNameLanguage" Content="" HorizontalAlignment="Left" Margin="270,190,0,0" VerticalAlignment="Top" Width="228" FontSize="12" Height="26"/>
-        <Label x:Name="lblNative" Content="" HorizontalAlignment="Left" Margin="270,210,0,0" VerticalAlignment="Top" Width="228" FontSize="12" Height="26"/>
-        <Label x:Name="lblCurrencyCode" Content="" HorizontalAlignment="Left" Margin="270,248,0,0" VerticalAlignment="Top" Width="228" FontSize="12" Height="26"/>
-        <Label x:Name="lblCurrencyName" Content="" HorizontalAlignment="Left" Margin="270,268,0,0" VerticalAlignment="Top" Width="228" FontSize="12" Height="26"/>
-        <Label x:Name="lblSymbol" Content="" HorizontalAlignment="Left" Margin="270,288,0,0" VerticalAlignment="Top" Width="254" FontSize="12" Height="26"/>
-        <ComboBox x:Name="cbCountry" HorizontalAlignment="Left" Margin="30,22,0,0" VerticalAlignment="Top" Width="228" Height="22" FontSize="12" SelectionChanged="CbCountry_SelectionChanged"/>
-        <Image x:Name="Flags" HorizontalAlignment="Left" Height="148" Margin="30,100,0,0" VerticalAlignment="Top" Width="249" Stretch="Fill">
-            <Image.DataContext>
-                <Properties:Resources/>
-            </Image.DataContext>
-        </Image>
-        <Label x:Name="lblDe" Content="" HorizontalAlignment="Left" Margin="532,68,0,0" VerticalAlignment="Top" Width="226" FontSize="12" Height="24" Grid.ColumnSpan="2"/>
-        <Label x:Name="lblEs" Content="" HorizontalAlignment="Left" Margin="532,88,0,0" VerticalAlignment="Top" Width="226" FontSize="12" Height="26" Grid.ColumnSpan="2"/>
-        <Label x:Name="lblFr" Content="" HorizontalAlignment="Left" Margin="532,108,0,0" VerticalAlignment="Top" Width="226" FontSize="12" Height="26" Grid.ColumnSpan="2"/>
-        <Label x:Name="lblJa" Content="" HorizontalAlignment="Left" Margin="532,128,0,0" VerticalAlignment="Top" Width="226" FontSize="12" Height="26" Grid.ColumnSpan="2"/>
-        <Label x:Name="lblIt" Content="" HorizontalAlignment="Left" Margin="532,148,0,0" VerticalAlignment="Top" Width="226" FontSize="12" Height="26" Grid.ColumnSpan="2"/>
-        <Label x:Name="lblBr" Content="" HorizontalAlignment="Left" Margin="532,168,0,0" VerticalAlignment="Top" Width="226" FontSize="12" Height="26" Grid.ColumnSpan="2"/>
-        <Label x:Name="lblPt" Content="" HorizontalAlignment="Left" Margin="532,188,0,0" VerticalAlignment="Top" Width="226" FontSize="12" Height="24" Grid.ColumnSpan="2"/>
-        <Label x:Name="lblNl" Content="" HorizontalAlignment="Left" Margin="532,208,0,0" VerticalAlignment="Top" Width="224" FontSize="12" Height="26" Grid.ColumnSpan="2"/>
-        <Label x:Name="lblHr" Content="" HorizontalAlignment="Left" Margin="532,228,0,0" VerticalAlignment="Top" Width="226" FontSize="12" Height="26" Grid.ColumnSpan="2"/>
-        <Label x:Name="lblFa" Content="" HorizontalAlignment="Left" Margin="532,248,0,0" VerticalAlignment="Top" Width="224" FontSize="12" Height="26" Grid.ColumnSpan="2"/>
-        <Label x:Name="lblCases"  Content="" HorizontalAlignment="Left" Margin="229,68,0,0" VerticalAlignment="Top" Width="284" FontSize="12" Grid.Column="1" Height="26"/>
-        <Label x:Name="lblTodayCases" Content="" HorizontalAlignment="Left" Margin="229,88,0,0" VerticalAlignment="Top" Width="284" FontSize="12" Grid.Column="1" Height="26"/>
-        <Label x:Name="lblDeaths" Content="" HorizontalAlignment="Left" Margin="229,108,0,0" VerticalAlignment="Top" Width="284" FontSize="12" Grid.Column="1" Height="26"/>
-        <Label x:Name="lblTodayDeaths" Content="" HorizontalAlignment="Left" Margin="229,128,0,0" VerticalAlignment="Top" Width="284" FontSize="12" Grid.Column="1" Height="26"/>
-        <Label x:Name="lblRecovered" Content="" HorizontalAlignment="Left" Margin="229,148,0,0" VerticalAlignment="Top" Width="284" FontSize="12" Grid.Column="1" Height="26"/>
-        <Label x:Name="lblActive" Content="" HorizontalAlignment="Left" Margin="229,168,0,0" VerticalAlignment="Top" Width="284" FontSize="12" Grid.Column="1" Height="26"/>
-        <Label x:Name="lblCritical" Content="" HorizontalAlignment="Left" Margin="229,188,0,0" VerticalAlignment="Top" Width="284" FontSize="12" Grid.Column="1" Height="26"/>
-        <Label x:Name="lblCasesPerOneMillion" Content="" HorizontalAlignment="Left" Margin="229,208,0,0" VerticalAlignment="Top" Width="284" FontSize="12" Grid.Column="1" Height="26"/>
-        <Label Content="Translations" HorizontalAlignment="Left" Margin="532,20,0,0" VerticalAlignment="Top" Width="118" FontSize="18" FontWeight="Bold" Grid.ColumnSpan="2"/>
-        <Label Content="Covid19 Statistics" Grid.Column="1" HorizontalAlignment="Left" Margin="229,20,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="Bold"/>
+        <Label Content="Country" HorizontalAlignment="Left" Margin="404,31,0,0" VerticalAlignment="Top" Height="38" Width="96" FontSize="20" FontWeight="Bold" RenderTransformOrigin="1.125,0.645"/>
+        <Label x:Name="lblCapital" Content="" HorizontalAlignment="Left" Margin="429,90,0,0" VerticalAlignment="Top" Width="228" FontSize="12" Height="26" Grid.ColumnSpan="2"/>
+        <Label x:Name="lblRegion" Content="" HorizontalAlignment="Left" Margin="429,110,0,0" VerticalAlignment="Top" Width="228" FontSize="12" Height="26" Grid.ColumnSpan="2"/>
+        <Label x:Name="lblSubregion" Content="" HorizontalAlignment="Left" Margin="429,130,0,0" VerticalAlignment="Top" Width="228" FontSize="12" Height="26" Grid.ColumnSpan="2"/>
+        <Label x:Name="lblPopulation" Content="" HorizontalAlignment="Left" Margin="429,150,0,0" VerticalAlignment="Top" Width="228" FontSize="12" Height="26" Grid.ColumnSpan="2"/>
+        <Label x:Name="lblGini" Content="" HorizontalAlignment="Left" Margin="429,170,0,0" VerticalAlignment="Top" Width="228" FontSize="12" Height="26" Grid.ColumnSpan="2"/>
+        <Label x:Name="lblNameLanguage" Content="" HorizontalAlignment="Left" Margin="429,210,0,0" VerticalAlignment="Top" Width="228" FontSize="12" Height="26" Grid.ColumnSpan="2"/>
+        <Label x:Name="lblNative" Content="" HorizontalAlignment="Left" Margin="429,230,0,0" VerticalAlignment="Top" Width="228" FontSize="12" Height="26" Grid.ColumnSpan="2"/>
+        <Label x:Name="lblCurrencyCode" Content="" HorizontalAlignment="Left" Margin="429,268,0,0" VerticalAlignment="Top" Width="228" FontSize="12" Height="26" Grid.ColumnSpan="2"/>
+        <Label x:Name="lblCurrencyName" Content="" HorizontalAlignment="Left" Margin="429,288,0,0" VerticalAlignment="Top" Width="228" FontSize="12" Height="26" Grid.ColumnSpan="2"/>
+        <Label x:Name="lblSymbol" Content="" HorizontalAlignment="Left" Margin="429,308,0,0" VerticalAlignment="Top" Width="254" FontSize="12" Height="26" Grid.ColumnSpan="2"/>
+        <ComboBox x:Name="cbCountry" HorizontalAlignment="Left" Margin="30,36,0,0" VerticalAlignment="Top" Width="304" Height="22" FontSize="12" SelectionChanged="CbCountry_SelectionChanged"/>
+        <Image x:Name="Flag" Source="{Binding Flag}" HorizontalAlignment="Left" Height="214" Margin="30,100,0,0" VerticalAlignment="Top" Width="373" Stretch="Fill"/>
+        <Label x:Name="lblDe" Content="" HorizontalAlignment="Left" Margin="122,88,0,0" VerticalAlignment="Top" Width="226" FontSize="12" Height="24" Grid.Column="1"/>
+        <Label x:Name="lblEs" Content="" HorizontalAlignment="Left" Margin="122,108,0,0" VerticalAlignment="Top" Width="226" FontSize="12" Height="26" Grid.Column="1"/>
+        <Label x:Name="lblFr" Content="" HorizontalAlignment="Left" Margin="122,128,0,0" VerticalAlignment="Top" Width="226" FontSize="12" Height="26" Grid.Column="1"/>
+        <Label x:Name="lblJa" Content="" HorizontalAlignment="Left" Margin="122,148,0,0" VerticalAlignment="Top" Width="226" FontSize="12" Height="26" Grid.Column="1"/>
+        <Label x:Name="lblIt" Content="" HorizontalAlignment="Left" Margin="122,168,0,0" VerticalAlignment="Top" Width="226" FontSize="12" Height="26" Grid.Column="1"/>
+        <Label x:Name="lblBr" Content="" HorizontalAlignment="Left" Margin="122,188,0,0" VerticalAlignment="Top" Width="226" FontSize="12" Height="26" Grid.Column="1"/>
+        <Label x:Name="lblPt" Content="" HorizontalAlignment="Left" Margin="122,208,0,0" VerticalAlignment="Top" Width="226" FontSize="12" Height="24" Grid.Column="1"/>
+        <Label x:Name="lblNl" Content="" HorizontalAlignment="Left" Margin="122,228,0,0" VerticalAlignment="Top" Width="224" FontSize="12" Height="26" Grid.Column="1"/>
+        <Label x:Name="lblHr" Content="" HorizontalAlignment="Left" Margin="122,248,0,0" VerticalAlignment="Top" Width="226" FontSize="12" Height="26" Grid.Column="1"/>
+        <Label x:Name="lblFa" Content="" HorizontalAlignment="Left" Margin="122,268,0,0" VerticalAlignment="Top" Width="224" FontSize="12" Height="26" Grid.Column="1"/>
+        <Label x:Name="lblCases"  Content="" HorizontalAlignment="Left" Margin="388,88,0,0" VerticalAlignment="Top" Width="284" FontSize="12" Grid.Column="1" Height="26"/>
+        <Label x:Name="lblTodayCases" Content="" HorizontalAlignment="Left" Margin="388,108,0,0" VerticalAlignment="Top" Width="284" FontSize="12" Grid.Column="1" Height="26"/>
+        <Label x:Name="lblDeaths" Content="" HorizontalAlignment="Left" Margin="388,128,0,0" VerticalAlignment="Top" Width="284" FontSize="12" Grid.Column="1" Height="26"/>
+        <Label x:Name="lblTodayDeaths" Content="" HorizontalAlignment="Left" Margin="388,148,0,0" VerticalAlignment="Top" Width="284" FontSize="12" Grid.Column="1" Height="26"/>
+        <Label x:Name="lblRecovered" Content="" HorizontalAlignment="Left" Margin="388,168,0,0" VerticalAlignment="Top" Width="284" FontSize="12" Grid.Column="1" Height="26"/>
+        <Label x:Name="lblActive" Content="" HorizontalAlignment="Left" Margin="388,188,0,0" VerticalAlignment="Top" Width="284" FontSize="12" Grid.Column="1" Height="26"/>
+        <Label x:Name="lblCritical" Content="" HorizontalAlignment="Left" Margin="388,208,0,0" VerticalAlignment="Top" Width="284" FontSize="12" Grid.Column="1" Height="26"/>
+        <Label x:Name="lblCasesPerOneMillion" Content="" HorizontalAlignment="Left" Margin="388,228,0,0" VerticalAlignment="Top" Width="284" FontSize="12" Grid.Column="1" Height="26"/>
+        <Label Content="Translations" HorizontalAlignment="Left" Margin="122,35,0,0" VerticalAlignment="Top" Width="118" FontSize="18" FontWeight="Bold" Grid.Column="1"/>
+        <Label Content="Covid19 Statistics" Grid.Column="1" HorizontalAlignment="Left" Margin="388,35,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" RenderTransformOrigin="0.484,-0.074"/>
 
     </Grid>
 </Window>

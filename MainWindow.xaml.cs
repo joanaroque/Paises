@@ -4,8 +4,11 @@
     using Services;
     using System;
     using System.Collections.Generic;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Windows;
+    using System.Windows.Media;
+    using System.Windows.Media.Imaging;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -31,6 +34,7 @@
 
             LoadCountries();
             LoadCovid19Data();
+
         }
 
         private async void LoadCovid19Data()
@@ -146,61 +150,69 @@
             Countries = (List<RootObject>)response.Result; // vai buscar a referencia da lista
 
             dataServices.DeleteDataCountries();
-            dataServices.DeleteDataCurrencies();
-            dataServices.DeleteDataLanguages();
-            dataServices.DeleteDataTranslations();
 
             dataServices.SaveDataCountries(Countries);
-           // dataServices.SaveDataCurrencies(Countries);
         }
 
         private void LoadLocalCountries()
         {
-            Countries = dataServices.GetData();
+            Countries = dataServices.GetDataCountries();
         }
 
         private void CbCountry_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            lblCapital.Content = $"Capital: {Countries[cbCountry.SelectedIndex].Capital}";
-            lblRegion.Content = $"Region: {Countries[cbCountry.SelectedIndex].Region}";
-            lblSubregion.Content = $"Subregion: {Countries[cbCountry.SelectedIndex].Subregion}";
-            lblPopulation.Content = $"Population: {Countries[cbCountry.SelectedIndex].Population}";
-            lblGini.Content = $"Gini: {Countries[cbCountry.SelectedIndex].Gini}";
+            RootObject currentCountry = Countries[cbCountry.SelectedIndex];
 
-            lblCurrencyCode.Content = $"Currency Code: {Countries[cbCountry.SelectedIndex].Currencies[0].Code}";
-            lblCurrencyName.Content = $"Currency Name: {Countries[cbCountry.SelectedIndex].Currencies[0].Name}";
-            lblSymbol.Content = $"Currency Symbol: {Countries[cbCountry.SelectedIndex].Currencies[0].Symbol}";
+            try
+            {
+                Flag.Source = new BitmapImage(new Uri($@"\Resources\{currentCountry.Name.ToLower()}.png", UriKind.Relative));
+            }
+            catch (Exception)
+            {
+                Flag.Source = new BitmapImage(new Uri(@"\Resources\image.jpg", UriKind.Relative));
+            }
 
-            lblNameLanguage.Content = $"Laguage Name: {Countries[cbCountry.SelectedIndex].Languages[0].Name}";
-            lblNative.Content = $"Native Name: {Countries[cbCountry.SelectedIndex].Languages[0].NativeName}";
+            lblCapital.Content = $"Capital: {currentCountry.Capital}";
+            lblRegion.Content = $"Region: {currentCountry.Region}";
+            lblSubregion.Content = $"Subregion: {currentCountry.Subregion}";
+            lblPopulation.Content = $"Population: {currentCountry.Population}";
+            lblGini.Content = $"Gini: {currentCountry.Gini}";
 
-            lblDe.Content = $"German: {Countries[cbCountry.SelectedIndex].Translations.De}";
-            lblEs.Content = $"Spanish: {Countries[cbCountry.SelectedIndex].Translations.Es}";
-            lblFr.Content = $"French: {Countries[cbCountry.SelectedIndex].Translations.Fr}";
-            lblJa.Content = $"Japanese: {Countries[cbCountry.SelectedIndex].Translations.Ja}";
-            lblIt.Content = $"Italian: {Countries[cbCountry.SelectedIndex].Translations.It}";
-            lblBr.Content = $"Brazilian: {Countries[cbCountry.SelectedIndex].Translations.Br}";
-            lblPt.Content = $"Portuguese: {Countries[cbCountry.SelectedIndex].Translations.Pt}";
-            lblNl.Content = $"Dutch: {Countries[cbCountry.SelectedIndex].Translations.Nl}";
-            lblHr.Content = $"Croatian: {Countries[cbCountry.SelectedIndex].Translations.Hr}";
-            lblFa.Content = $"Arabian: {Countries[cbCountry.SelectedIndex].Translations.Fa}";//Todo se alguma propriedade nao existir, mostrar X 
+            foreach (var currencies in currentCountry.Currencies)
+            {
+                lblCurrencyCode.Content = $"Currency Code: {currencies.Code}";
+                lblCurrencyName.Content = $"Currency Name: {currencies.Name}";
+                lblSymbol.Content = $"Currency Symbol: {currencies.Symbol}";
+            }
 
-            lblCases.Content = $"Cases: {Corona[cbCountry.SelectedIndex].Cases}";
-            lblTodayCases.Content = $"Today Cases: {Corona[cbCountry.SelectedIndex].TodayCases}";
-            lblDeaths.Content = $"Deaths: {Corona[cbCountry.SelectedIndex].Deaths}";
-            lblTodayDeaths.Content = $"Today Deaths: {Corona[cbCountry.SelectedIndex].TodayDeaths}";
-            lblRecovered.Content = $"Recovered: {Corona[cbCountry.SelectedIndex].Recovered}";
-            lblActive.Content = $"Active: {Corona[cbCountry.SelectedIndex].Active}";
-            lblCritical.Content = $"Critical: {Corona[cbCountry.SelectedIndex].Critical}";
-            lblCasesPerOneMillion.Content = $"Cases Per One Million: {Corona[cbCountry.SelectedIndex].CasesPerOneMillion}";
+            foreach (var languages in currentCountry.Languages)
+            {
+                lblNameLanguage.Content = $"Laguage Name: {languages.Name}";
+                lblNative.Content = $"Native Name: {languages.NativeName}";
+            }
 
-            //string s = cbCountry.SelectedItem.ToString();
-            //Flags.Source = new BitmapCache(s);
-        }
+            lblDe.Content = $"German: {currentCountry.Translations.De}";
+            lblEs.Content = $"Spanish: {currentCountry.Translations.Es}";
+            lblFr.Content = $"French: {currentCountry.Translations.Fr}";
+            lblJa.Content = $"Japanese: {currentCountry.Translations.Ja}";
+            lblIt.Content = $"Italian: {currentCountry.Translations.It}";
+            lblBr.Content = $"Brazilian: {currentCountry.Translations.Br}";
+            lblPt.Content = $"Portuguese: {currentCountry.Translations.Pt}";
+            lblNl.Content = $"Dutch: {currentCountry.Translations.Nl}";
+            lblHr.Content = $"Croatian: {currentCountry.Translations.Hr}";
+            lblFa.Content = $"Arabian: {currentCountry.Translations.Fa}";//Todo se alguma propriedade nao existir, mostrar X 
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            cbCountry.Text = "-- SELECT COUNTRY --";
+
+            Covid19Data currentCountryCovid = Corona[cbCountry.SelectedIndex];
+
+            lblCases.Content = $"Cases: {currentCountryCovid.Cases}";
+            lblTodayCases.Content = $"Today Cases: {currentCountryCovid.TodayCases}";
+            lblDeaths.Content = $"Deaths: {currentCountryCovid.Deaths}";
+            lblTodayDeaths.Content = $"Today Deaths: {currentCountryCovid.TodayDeaths}";
+            lblRecovered.Content = $"Recovered: {currentCountryCovid.Recovered}";
+            lblActive.Content = $"Active: {currentCountryCovid.Active}";
+            lblCritical.Content = $"Critical: {currentCountryCovid.Critical}";
+            lblCasesPerOneMillion.Content = $"Cases Per One Million: {currentCountryCovid.CasesPerOneMillion}";
 
         }
     }
