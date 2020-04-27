@@ -6,12 +6,12 @@
     x:Class="Countries.MainWindow"
         mc:Ignorable="d"
         Title="Countries of the world statistics" Height="700" Width="1300">
-    <Grid Cursor="Arrow" RenderTransformOrigin="0.5,0.5" Margin="0,0,2,19">
+    <Grid Cursor="Arrow" RenderTransformOrigin="0.5,0.5" Margin="0,0,2,19" Background="AntiqueWhite">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="569*"/>
             <ColumnDefinition Width="721*"/>
         </Grid.ColumnDefinitions>
-        <ProgressBar x:Name="pb" HorizontalAlignment="Left" Height="42" Margin="67,570,0,0" VerticalAlignment="Top" Width="364" Grid.Column="1"/>
+        <ProgressBar x:Name="pb" HorizontalAlignment="Left" Height="26" Margin="67,570,0,0" VerticalAlignment="Top" Width="605" Grid.Column="1"/>
         <Label x:Name="lblResult" Content="Label" HorizontalAlignment="Left" Margin="30,478,0,0" VerticalAlignment="Top" Height="87" Width="494" FontSize="14"/>
         <Label x:Name="lblStatus" Content="*" HorizontalAlignment="Left" Margin="30,570,0,0" VerticalAlignment="Top" Height="42" Width="527" FontSize="14"/>
         <Label Content="Country" HorizontalAlignment="Left" Margin="404,31,0,0" VerticalAlignment="Top" Height="38" Width="96" FontSize="20" FontWeight="Bold" RenderTransformOrigin="1.125,0.645"/>
@@ -26,7 +26,7 @@
         <Label x:Name="lblCurrencyName" Content="" HorizontalAlignment="Left" Margin="429,288,0,0" VerticalAlignment="Top" Width="228" FontSize="12" Height="26" Grid.ColumnSpan="2"/>
         <Label x:Name="lblSymbol" Content="" HorizontalAlignment="Left" Margin="429,308,0,0" VerticalAlignment="Top" Width="254" FontSize="12" Height="26" Grid.ColumnSpan="2"/>
         <ComboBox x:Name="cbCountry" HorizontalAlignment="Left" Margin="30,36,0,0" VerticalAlignment="Top" Width="304" Height="22" FontSize="12" SelectionChanged="CbCountry_SelectionChanged"/>
-        <Image x:Name="Flag" Source="{Binding Flag}" HorizontalAlignment="Left" Height="214" Margin="30,100,0,0" VerticalAlignment="Top" Width="373" Stretch="Fill"/>
+        <Image x:Name="Flag" Source="{Binding LocalFlag}" HorizontalAlignment="Left" Height="214" Margin="30,100,0,0" VerticalAlignment="Top" Width="373" Stretch="Fill"/>
         <Label x:Name="lblDe" Content="" HorizontalAlignment="Left" Margin="122,88,0,0" VerticalAlignment="Top" Width="226" FontSize="12" Height="24" Grid.Column="1"/>
         <Label x:Name="lblEs" Content="" HorizontalAlignment="Left" Margin="122,108,0,0" VerticalAlignment="Top" Width="226" FontSize="12" Height="26" Grid.Column="1"/>
         <Label x:Name="lblFr" Content="" HorizontalAlignment="Left" Margin="122,128,0,0" VerticalAlignment="Top" Width="226" FontSize="12" Height="26" Grid.Column="1"/>

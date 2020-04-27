@@ -65,6 +65,33 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="NReco.PdfGenerator, Version=1.1.15.0, Culture=neutral, PublicKeyToken=231663d50a41b451, processorArchitecture=MSIL">
+      <HintPath>packages\NReco.PdfGenerator.1.1.15\lib\net20\NReco.PdfGenerator.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpVectors.Converters.Wpf, Version=1.5.0.0, Culture=neutral, PublicKeyToken=b532964b8548be77, processorArchitecture=MSIL">
+      <HintPath>packages\SharpVectors.Reloaded.1.5.0\lib\net40\SharpVectors.Converters.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpVectors.Core, Version=1.5.0.0, Culture=neutral, PublicKeyToken=7407205e337c98ef, processorArchitecture=MSIL">
+      <HintPath>packages\SharpVectors.Reloaded.1.5.0\lib\net40\SharpVectors.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpVectors.Css, Version=1.5.0.0, Culture=neutral, PublicKeyToken=7a46e3f532fdb787, processorArchitecture=MSIL">
+      <HintPath>packages\SharpVectors.Reloaded.1.5.0\lib\net40\SharpVectors.Css.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpVectors.Dom, Version=1.5.0.0, Culture=neutral, PublicKeyToken=517340b6277b1a7a, processorArchitecture=MSIL">
+      <HintPath>packages\SharpVectors.Reloaded.1.5.0\lib\net40\SharpVectors.Dom.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpVectors.Model, Version=1.5.0.0, Culture=neutral, PublicKeyToken=2236cfc76b505845, processorArchitecture=MSIL">
+      <HintPath>packages\SharpVectors.Reloaded.1.5.0\lib\net40\SharpVectors.Model.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpVectors.Rendering.Gdi, Version=1.5.0.0, Culture=neutral, PublicKeyToken=03902092284347e3, processorArchitecture=MSIL">
+      <HintPath>packages\SharpVectors.Reloaded.1.5.0\lib\net40\SharpVectors.Rendering.Gdi.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpVectors.Rendering.Wpf, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d0902381100df30e, processorArchitecture=MSIL">
+      <HintPath>packages\SharpVectors.Reloaded.1.5.0\lib\net40\SharpVectors.Rendering.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpVectors.Runtime.Wpf, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d16e717f0a981fb9, processorArchitecture=MSIL">
+      <HintPath>packages\SharpVectors.Reloaded.1.5.0\lib\net40\SharpVectors.Runtime.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="Svg, Version=3.0.0.0, Culture=neutral, PublicKeyToken=12a0bac221edeae2, processorArchitecture=MSIL">
       <HintPath>packages\Svg.3.0.102\lib\net452\Svg.dll</HintPath>
     </Reference>
@@ -161,258 +188,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\afghanistan.png" />
-    <Resource Include="Resources\aland.png" />
-    <Resource Include="Resources\albania.png" />
-    <Resource Include="Resources\algeria.png" />
-    <Resource Include="Resources\americanSamoa.png" />
-    <Resource Include="Resources\andorra.png" />
-    <Resource Include="Resources\angola.png" />
-    <Resource Include="Resources\anguilla.png" />
-    <Resource Include="Resources\antarctida.png" />
-    <Resource Include="Resources\antiguaBarbuda.png" />
-    <Resource Include="Resources\argentina.png" />
-    <Resource Include="Resources\armenia.png" />
-    <Resource Include="Resources\aruba.png" />
-    <Resource Include="Resources\australia.png" />
-    <Resource Include="Resources\austria.png" />
-    <Resource Include="Resources\azerbaijan.png" />
-    <Resource Include="Resources\bahamas.png" />
-    <Resource Include="Resources\bahrein.png" />
-    <Resource Include="Resources\bangladesh.png" />
-    <Resource Include="Resources\barbados.png" />
-    <Resource Include="Resources\belgium.png" />
-    <Resource Include="Resources\belize.png" />
-    <Resource Include="Resources\benin.png" />
-    <Resource Include="Resources\bermuda.png" />
-    <Resource Include="Resources\bhutan.png" />
-    <Resource Include="Resources\bolivia.png" />
-    <Resource Include="Resources\bonaire.png" />
-    <Resource Include="Resources\bosnia.png" />
-    <Resource Include="Resources\botswana.png" />
-    <Resource Include="Resources\bouvet.png" />
-    <Resource Include="Resources\brazil.png" />
-    <Resource Include="Resources\british_indian_ocean_territory.png" />
-    <Resource Include="Resources\brunei.png" />
-    <Resource Include="Resources\bulgaria.png" />
-    <Resource Include="Resources\burkinafaso.png" />
-    <Resource Include="Resources\burundi.png" />
-    <Resource Include="Resources\camboja.png" />
-    <Resource Include="Resources\cameroon.png" />
-    <Resource Include="Resources\canada.png" />
-    <Resource Include="Resources\capevert.png" />
-    <Resource Include="Resources\cayman.png" />
-    <Resource Include="Resources\central_african_republic.png" />
-    <Resource Include="Resources\chad.png" />
-    <Resource Include="Resources\chile.png" />
-    <Resource Include="Resources\china.png" />
-    <Resource Include="Resources\christmas.png" />
-    <Resource Include="Resources\cocos.png" />
-    <Resource Include="Resources\colombia.png" />
-    <Resource Include="Resources\comoros.png" />
-    <Resource Include="Resources\congo.png" />
-    <Resource Include="Resources\cook_island.png" />
-    <Resource Include="Resources\costa_rica.png" />
-    <Resource Include="Resources\croatia.png" />
-    <Resource Include="Resources\cuba.png" />
-    <Resource Include="Resources\curacao.png" />
-    <Resource Include="Resources\cyprus.png" />
-    <Resource Include="Resources\czech_republic.png" />
-    <Resource Include="Resources\denmark.png" />
-    <Resource Include="Resources\djibouti.png" />
-    <Resource Include="Resources\dominica.png" />
-    <Resource Include="Resources\dominican_republic.png" />
-    <Resource Include="Resources\ecuador.png" />
-    <Resource Include="Resources\egypt.png" />
-    <Resource Include="Resources\elsalvador.png" />
-    <Resource Include="Resources\equatorialGuinea.png" />
-    <Resource Include="Resources\eritrea.png" />
-    <Resource Include="Resources\estonia.png" />
-    <Resource Include="Resources\ethiopia.png" />
-    <Resource Include="Resources\falkland.png" />
-    <Resource Include="Resources\faroe.png" />
-    <Resource Include="Resources\fiji.png" />
-    <Resource Include="Resources\finland.png" />
-    <Resource Include="Resources\france.png" />
-    <Resource Include="Resources\frenchguiana.png" />
-    <Resource Include="Resources\frenchpolinesia.png" />
-    <Resource Include="Resources\frenchsouthernterritories.png" />
-    <Resource Include="Resources\gabon.png" />
-    <Resource Include="Resources\gambia.png" />
-    <Resource Include="Resources\georgia.png" />
-    <Resource Include="Resources\germany.png" />
-    <Resource Include="Resources\ghana.png" />
-    <Resource Include="Resources\gibraltar.png" />
-    <Resource Include="Resources\greece.png" />
-    <Resource Include="Resources\greenland.png" />
-    <Resource Include="Resources\grenada.png" />
-    <Resource Include="Resources\guadeloupe.png" />
-    <Resource Include="Resources\guam.png" />
-    <Resource Include="Resources\guatemala.png" />
-    <Resource Include="Resources\guernsey.png" />
-    <Resource Include="Resources\guinea-bissau.png" />
-    <Resource Include="Resources\guinea.png" />
-    <Resource Include="Resources\guyana.png" />
-    <Resource Include="Resources\haiti.png" />
-    <Resource Include="Resources\heardisland.png" />
-    <Resource Include="Resources\holysee.png" />
-    <Resource Include="Resources\honduras.png" />
-    <Resource Include="Resources\hongkong.png" />
-    <Resource Include="Resources\hungary.png" />
-    <Resource Include="Resources\iceland.png" />
-    <Resource Include="Resources\image.jpg" />
-    <Resource Include="Resources\india.png" />
-    <Resource Include="Resources\indonesia.png" />
-    <Resource Include="Resources\iran.png" />
-    <Resource Include="Resources\iraq.png" />
-    <Resource Include="Resources\ireland.png" />
-    <Resource Include="Resources\isleofman.png" />
-    <Resource Include="Resources\israel.png" />
-    <Resource Include="Resources\italy.png" />
-    <Resource Include="Resources\ivoire-cote.png" />
-    <Resource Include="Resources\jamaica.png" />
-    <Resource Include="Resources\japan.png" />
-    <Resource Include="Resources\jersey.png" />
-    <Resource Include="Resources\jordan.png" />
-    <Resource Include="Resources\kazakhstan.png" />
-    <Resource Include="Resources\kenya.png" />
-    <Resource Include="Resources\kiribati.png" />
-    <Resource Include="Resources\kuwait.png" />
-    <Resource Include="Resources\kyrgyzstan.png" />
-    <Resource Include="Resources\laos.png" />
-    <Resource Include="Resources\latvia.png" />
-    <Resource Include="Resources\lebanon.png" />
-    <Resource Include="Resources\lesotho.png" />
-    <Resource Include="Resources\liberia.png" />
-    <Resource Include="Resources\libya.png" />
-    <Resource Include="Resources\liechtenstein.png" />
-    <Resource Include="Resources\lithuania.png" />
-    <Resource Include="Resources\luxembourg.png" />
-    <Resource Include="Resources\macao.png" />
-    <Resource Include="Resources\macedonia.png" />
-    <Resource Include="Resources\madagascar.png" />
-    <Resource Include="Resources\malawi.png" />
-    <Resource Include="Resources\malaysia.png" />
-    <Resource Include="Resources\maldives.png" />
-    <Resource Include="Resources\mali.png" />
-    <Resource Include="Resources\malta.png" />
-    <Resource Include="Resources\marshallislands.png" />
-    <Resource Include="Resources\martinique.png" />
-    <Resource Include="Resources\mauritania.png" />
-    <Resource Include="Resources\mauritius.png" />
-    <Resource Include="Resources\mayotte.png" />
-    <Resource Include="Resources\mexico.png" />
-    <Resource Include="Resources\micronesia.png" />
-    <Resource Include="Resources\moldova.png" />
-    <Resource Include="Resources\monaco.png" />
-    <Resource Include="Resources\mongolia.png" />
-    <Resource Include="Resources\montenegro.png" />
-    <Resource Include="Resources\montserrat.png" />
-    <Resource Include="Resources\morocco.png" />
-    <Resource Include="Resources\mozambique.png" />
-    <Resource Include="Resources\myanmar.png" />
-    <Resource Include="Resources\namibia.png" />
-    <Resource Include="Resources\nauru.png" />
-    <Resource Include="Resources\nepal.png" />
-    <Resource Include="Resources\netherlands.png" />
-    <Resource Include="Resources\new-caledonia.png" />
-    <Resource Include="Resources\new-zealand.png" />
-    <Resource Include="Resources\nicaragua.png" />
-    <Resource Include="Resources\niger.png" />
-    <Resource Include="Resources\nigeria.png" />
-    <Resource Include="Resources\niue.png" />
-    <Resource Include="Resources\norfolk.png" />
-    <Resource Include="Resources\northern_mariana.png" />
-    <Resource Include="Resources\northkorea.png" />
-    <Resource Include="Resources\norway.png" />
-    <Resource Include="Resources\oman.png" />
-    <Resource Include="Resources\pakistan.png" />
-    <Resource Include="Resources\palau.png" />
-    <Resource Include="Resources\palestine.png" />
-    <Resource Include="Resources\panama.png" />
-    <Resource Include="Resources\papua.png" />
-    <Resource Include="Resources\paraguay.png" />
-    <Resource Include="Resources\peru.png" />
-    <Resource Include="Resources\philippines.png" />
-    <Resource Include="Resources\pitcairn.png" />
-    <Resource Include="Resources\poland.png" />
-    <Resource Include="Resources\portugal.png" />
-    <Resource Include="Resources\previouspage.jpg" />
-    <Resource Include="Resources\puerto-rico.png" />
-    <Resource Include="Resources\qatar.png" />
-    <Resource Include="Resources\republic-of-kosovo.png" />
-    <Resource Include="Resources\reunion.png" />
-    <Resource Include="Resources\romania.png" />
-    <Resource Include="Resources\russia.png" />
-    <Resource Include="Resources\rwanda.png" />
-    <Resource Include="Resources\saint-barthelemy.png" />
-    <Resource Include="Resources\saint-helena.png" />
-    <Resource Include="Resources\saint-kitts.png" />
-    <Resource Include="Resources\saint-lucia.png" />
-    <Resource Include="Resources\saint-martin.png" />
-    <Resource Include="Resources\saint-pierre.png" />
-    <Resource Include="Resources\saint-vincent.png" />
-    <Resource Include="Resources\samoa.png" />
-    <Resource Include="Resources\san-marino.png" />
-    <Resource Include="Resources\saotome.png" />
-    <Resource Include="Resources\saudi-arabia.png" />
-    <Resource Include="Resources\senegal.png" />
-    <Resource Include="Resources\serbia.png" />
-    <Resource Include="Resources\seychelles.png" />
-    <Resource Include="Resources\sierra-leone.png" />
-    <Resource Include="Resources\singapore.png" />
-    <Resource Include="Resources\sint-maarten.png" />
-    <Resource Include="Resources\slovakia.png" />
-    <Resource Include="Resources\slovenia.png" />
-    <Resource Include="Resources\solomon-islands.png" />
-    <Resource Include="Resources\somalia.png" />
-    <Resource Include="Resources\south-africa.png" />
-    <Resource Include="Resources\south-georgia.png" />
-    <Resource Include="Resources\south-korea.png" />
-    <Resource Include="Resources\south-sudan.png" />
-    <Resource Include="Resources\spain.png" />
-    <Resource Include="Resources\sri-lanka.png" />
-    <Resource Include="Resources\sudan.png" />
-    <Resource Include="Resources\suriname.png" />
-    <Resource Include="Resources\svalbard.png" />
-    <Resource Include="Resources\swaziland.png" />
-    <Resource Include="Resources\sweden.png" />
-    <Resource Include="Resources\switzerland.png" />
-    <Resource Include="Resources\syria.png" />
-    <Resource Include="Resources\taiwan.png" />
-    <Resource Include="Resources\tajikistan.png" />
-    <Resource Include="Resources\tanzania.png" />
-    <Resource Include="Resources\thailand.png" />
-    <Resource Include="Resources\timor.png" />
-    <Resource Include="Resources\togo.png" />
-    <Resource Include="Resources\tokelau.png" />
-    <Resource Include="Resources\tonga.png" />
-    <Resource Include="Resources\trinidad.png" />
-    <Resource Include="Resources\tunisia.png" />
-    <Resource Include="Resources\turkey.png" />
-    <Resource Include="Resources\turkmenistan.png" />
-    <Resource Include="Resources\turks-caicos.png" />
-    <Resource Include="Resources\tuvalu.png" />
-    <Resource Include="Resources\uganda.png" />
-    <Resource Include="Resources\ukraine.png" />
-    <Resource Include="Resources\united-emirates.png" />
-    <Resource Include="Resources\united-kingdom.png" />
-    <Resource Include="Resources\united-states-of-america.png" />
-    <Resource Include="Resources\united_states_minor_outlying_islands.png" />
-    <Resource Include="Resources\uruguay.png" />
-    <Resource Include="Resources\uzbekistan.png" />
-    <Resource Include="Resources\vanuatu.png" />
-    <Resource Include="Resources\venezuela.png" />
-    <Resource Include="Resources\vietnam.png" />
-    <Resource Include="Resources\virgin_islands%28us%29.png" />
-    <Resource Include="Resources\virgin_islands_brittish.png" />
-    <Resource Include="Resources\wallis.png" />
-    <Resource Include="Resources\western-sahara.png" />
-    <Resource Include="Resources\yemen.png" />
-    <Resource Include="Resources\zambia.png" />
-    <Resource Include="Resources\zimbabwe.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

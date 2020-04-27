@@ -5,6 +5,8 @@
     using System.Collections.Generic;
     using System.Data.SQLite;
     using System.IO;
+    using System.Threading.Tasks;
+
     public class DataService
     {
         private SQLiteConnection connection;
@@ -19,7 +21,7 @@
 
         private const string DataName = "Data";
 
-        public void CreateDataCountries() // passa aqui
+        public async Task CreateDataCountries()
         {
             dialogService = new DialogService();
 
@@ -30,7 +32,7 @@
             try
             {
                 connection = new SQLiteConnection("Data Source=" + Path);
-                connection.Open();
+                await connection.OpenAsync();
 
                 string sqlcommand = "create table if not exists Countries " +
                     "(Alpha2Code varchar(2), Name varchar(50), Capital varchar(50), " +
@@ -40,7 +42,7 @@
 
                 command = new SQLiteCommand(sqlcommand, connection);
 
-                command.ExecuteNonQuery();
+               await command.ExecuteNonQueryAsync();
             }
             catch (Exception ex)
             {
@@ -51,7 +53,7 @@
                 connection.Close();
             }
         }
-        public void CreateDataCurrencies() // passa aqui
+        public async Task CreateDataCurrencies()
         {
             dialogService = new DialogService();
 
@@ -63,7 +65,7 @@
             try
             {
                 connection = new SQLiteConnection("Data Source=" + Path);
-                connection.Open();
+                await connection.OpenAsync();
 
                 string sqlcommand = "create table if not exists currencies " +
                     "(Alpha2Code varchar(2), Code varchar(10), CurrencyName varchar(50)," +
@@ -71,7 +73,7 @@
 
                 command = new SQLiteCommand(sqlcommand, connection);
 
-                command.ExecuteNonQuery();
+               await command.ExecuteNonQueryAsync();
             }
             catch (Exception ex)
             {
@@ -82,7 +84,7 @@
                 connection.Close();
             }
         }
-        public void CreateDataTranslations() // passa aqui
+        public async Task CreateDataTranslations()
         {
             dialogService = new DialogService();
 
@@ -94,7 +96,7 @@
             try
             {
                 connection = new SQLiteConnection("Data Source=" + Path);
-                connection.Open();
+                await connection.OpenAsync();
 
                 string sqlcommand = "create table if not exists translations " +
                     "(Alpha2Code varchar(2), De varchar(50), Es varchar(50)," +
@@ -104,7 +106,7 @@
 
                 command = new SQLiteCommand(sqlcommand, connection);
 
-                command.ExecuteNonQuery();
+               await command.ExecuteNonQueryAsync();
             }
             catch (Exception ex)
             {
@@ -115,7 +117,7 @@
                 connection.Close();
             }
         }
-        public void CreateDataLanguages() // passa aqui
+        public async Task CreateDataLanguages()
         {
             dialogService = new DialogService();
 
@@ -127,7 +129,7 @@
             try
             {
                 connection = new SQLiteConnection("Data Source=" + Path);
-                connection.Open();
+                await connection.OpenAsync();
 
                 string sqlcommand = "create table if not exists Languages " +
                     "(Alpha2Code varchar(2), LanguageName varchar(50)," +
@@ -135,7 +137,7 @@
 
                 command = new SQLiteCommand(sqlcommand, connection);
 
-                command.ExecuteNonQuery();
+               await command.ExecuteNonQueryAsync();
             }
             catch (Exception ex)
             {
@@ -146,7 +148,7 @@
                 connection.Close();
             }
         }
-        public void CreateDataCovid19() // passa aqui
+        public async Task CreateDataCovid19()
         {
             dialogService = new DialogService();
 
@@ -158,7 +160,7 @@
             try
             {
                 connection = new SQLiteConnection("Data Source=" + PathCovid19);
-                connection.Open();
+                await connection.OpenAsync();
 
                 string sqlcommand = "create table if not exists Covid19 " +
                     "(Country varchar(50), Cases int, " +
@@ -168,7 +170,7 @@
 
                 command = new SQLiteCommand(sqlcommand, connection);
 
-                command.ExecuteNonQuery();
+               await command.ExecuteNonQueryAsync();
             }
             catch (Exception ex)
             {
@@ -179,21 +181,20 @@
                 connection.Close();
             }
         }
-        public void SaveDataCountries(List<RootObject> Countries)
+        public async Task SaveDataCountries(List<RootObject> Countries)
         {
             connection = new SQLiteConnection("Data Source=" + Path);
 
+            string sqlCountry = string.Format("insert into Countries (Alpha2Code, Name, Capital, Region, Subregion, Population, Gini, Flag)" +
+                   " values (@Alpha2Code, @Name, @Capital, @Region, @Subregion, @Population, @Gini, @Flag)");
             try
             {
-                connection.Open();
+                command = new SQLiteCommand(sqlCountry, connection);
+
+                await connection.OpenAsync();
 
                 foreach (var country in Countries)
                 {
-                    string sqlCountry = string.Format("insert into Countries (Alpha2Code, Name, Capital, Region, Subregion, Population, Gini, Flag)" +
-                   " values (@Alpha2Code, @Name, @Capital, @Region, @Subregion, @Population, @Gini, @Flag)");
-
-                    command = new SQLiteCommand(sqlCountry, connection);
-
                     command.Parameters.Add(new SQLiteParameter("@Alpha2Code", country.Alpha2Code));
                     command.Parameters.Add(new SQLiteParameter("@Name", country.Name));
                     command.Parameters.Add(new SQLiteParameter("@Capital", country.Capital));
@@ -203,13 +204,37 @@
                     command.Parameters.Add(new SQLiteParameter("@Gini", country.Gini));
                     command.Parameters.Add(new SQLiteParameter("@Flag", country.Flag));
 
-                    command.ExecuteNonQuery(); // nao passa aqui
+                   await command.ExecuteNonQueryAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                dialogService.ShowMessage("Error", ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+        public async Task SaveCurrencies()
+        {
+            List<RootObject> Countries = new List<RootObject>();
 
+            connection = new SQLiteConnection("Data Source=" + Path);
+
+            string sqlCurrencies = string.Format("insert into currencies (Alpha2Code, Code, CurrencyName, Symbol)" +
+                   " values (@Alpha2Code, @Code, @CurrencyName, @Symbol)");
+
+            try
+            {
+                command = new SQLiteCommand(sqlCurrencies, connection);
+
+                await connection.OpenAsync();
+
+                foreach (var country in Countries)
+                {
                     foreach (var currency in country.Currencies)
                     {
-                        string sqlCurrencies = string.Format("insert into currencies (Alpha2Code, Code, CurrencyName, Symbol)" +
-                       " values (@Alpha2Code, @Code, @CurrencyName, @Symbol)");
-
                         command = new SQLiteCommand(sqlCurrencies, connection);
 
                         command.Parameters.Add(new SQLiteParameter("@Alpha2Code", country.Alpha2Code));
@@ -217,12 +242,38 @@
                         command.Parameters.Add(new SQLiteParameter("@CurrencyName", currency.Name));
                         command.Parameters.Add(new SQLiteParameter("@Symbol", currency.Symbol));
 
-                        command.ExecuteNonQuery(); // nao passa aqui
+                       await command.ExecuteNonQueryAsync();
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                dialogService.ShowMessage("Error", ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+        public async Task SaveLanguages()
+        {
+            List<RootObject> Countries = new List<RootObject>();
+
+            connection = new SQLiteConnection("Data Source=" + Path);
+
+            string sqlLanguages = string.Format("insert into languages (Alpha2Code, LanguageName, NativeName)" +
+                        " values (@Alpha2Code, @LanguageName, @NativeName)");
+
+            try
+            {
+                command = new SQLiteCommand(sqlLanguages, connection);
+
+                await connection.OpenAsync();
+
+                foreach (var country in Countries)
+                {
                     foreach (var language in country.Languages)
                     {
-                        string sqlLanguages = string.Format("insert into languages (Alpha2Code, LanguageName, NativeName)" +
-                            " values (@Alpha2Code, @LanguageName, @NativeName)");
 
                         command = new SQLiteCommand(sqlLanguages, connection);
 
@@ -230,12 +281,36 @@
                         command.Parameters.Add(new SQLiteParameter("@LanguageName", language.Name));
                         command.Parameters.Add(new SQLiteParameter("@NativeName", language.NativeName));
 
-                        command.ExecuteNonQuery(); // nao passa aqui
+                       await command.ExecuteNonQueryAsync();
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                dialogService.ShowMessage("Error", ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+        public async Task SaveTranslations()
+        {
+            List<RootObject> Countries = new List<RootObject>();
 
-                    string sqlTranslation = string.Format("insert into translations (Alpha2Code, De, Es, Fr, Ja, It, Br, Pt, Nl, Hr, Fa)" +
+            connection = new SQLiteConnection("Data Source=" + Path);
+
+            string sqlTranslation = string.Format("insert into translations (Alpha2Code, De, Es, Fr, Ja, It, Br, Pt, Nl, Hr, Fa)" +
                         " values (@Alpha2Code, @De, @Es, @Fr, @Ja, @It, @Br, @Pt, @Nl, @Hr, @Fa)");
 
+            try
+            {
+                command = new SQLiteCommand(sqlTranslation, connection);
+
+                await connection.OpenAsync();
+
+                foreach (var country in Countries)
+                {
                     command = new SQLiteCommand(sqlTranslation, connection);
 
                     command.Parameters.Add(new SQLiteParameter("@Alpha2Code", country.Alpha2Code));
@@ -250,25 +325,25 @@
                     command.Parameters.Add(new SQLiteParameter("@Hr", country.Translations.Hr));
                     command.Parameters.Add(new SQLiteParameter("@Fa", country.Translations.Fa));
 
-                    command.ExecuteNonQuery(); // nao passa aqui
+                   await command.ExecuteNonQueryAsync();
                 }
             }
             catch (Exception ex)
             {
-                dialogService.ShowMessage("merda 1", ex.Message);
+                dialogService.ShowMessage("Error", ex.Message);
             }
             finally
             {
                 connection.Close();
             }
         }
-        public void SaveDataCovid19(List<Covid19Data> Corona)
+        public async Task SaveDataCovid19(List<Covid19Data> Corona)
         {
             connection = new SQLiteConnection("Data Source=" + PathCovid19);
 
             try
             {
-                connection.Open();
+                await connection.OpenAsync();
 
                 foreach (var covid19 in Corona)
                 {
@@ -288,58 +363,33 @@
                     command.Parameters.Add(new SQLiteParameter("@Critical", covid19.Critical));
                     command.Parameters.Add(new SQLiteParameter("@CasesPerOneMillion", covid19.CasesPerOneMillion));
 
-                    command.ExecuteNonQuery();
+                  await command.ExecuteNonQueryAsync();
                 }
             }
             catch (Exception ex)
             {
-                dialogService.ShowMessage("merda 2", ex.Message); // passa este
+                dialogService.ShowMessage("Error", ex.Message); // passa este
             }
             finally
             {
                 connection.Close();
             }
         }
-
         public List<RootObject> GetDataCountries()
         {
             List<RootObject> countries = new List<RootObject>();
 
-            //**** vou buscar os paises todos ****
-            // criar ligaçao à base de dados e abrir.
+            connection = new SQLiteConnection("Data Source=" + Path);
 
-            // - secçao abaixo pode ser extraido para metodo.
-
-
-            // definir query para ler paises.
-            // executar query para ler paises
-
-            //iterar sobre resultado da query
-            // por cada linha ( cada pais):
-            // ir buscar currencies to pais
-            // definir query para ler currency do pais
-            //executar query para ler currencies do pais
-            //iterar sobre resultado da query
-            // por cada linha ( cada currency do pais)
-            // adicionar à lista de currencies do pais
-
-
-            //»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»
-
-            SQLiteConnection connection = new SQLiteConnection("Data Source=" + Path);
+            string countriesSql = "select Alpha2Code, Name, Capital, Region, Subregion, Population, Gini, Flag from Countries";
 
             try
             {
                 connection.Open();
 
-                string countriesSql = "select Alpha2Code, Name, Capital, Region, Subregion, Population, Gini, Flag from Countries";
-
                 SQLiteDataReader countriesReader = new SQLiteCommand(countriesSql, connection).ExecuteReader();
 
-                // se devolver linhas
-
-                // iterar cada pais, caso a query devolva.
-                while (countriesReader.Read())//enquanto tiver registos pra ler
+                while (countriesReader.Read())
                 {
                     RootObject currentCountry = new RootObject
                     {
@@ -365,7 +415,6 @@
 
                         while (readerCurr.Read())
                         {
-
                             currencies.Add(new Currency
                             {
                                 Code = GetDBStringValue(readerCurr, 0),
@@ -452,6 +501,12 @@
                 return null;
             }
         }
+        /// <summary>
+        /// If database as null values, show null, if not, show what it is
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <param name="id"></param>
+        /// <returns>null if database as null, or something else</returns>
         private string GetDBStringValue(SQLiteDataReader reader, int id)
         {
             return reader.IsDBNull(id) ? null : reader.GetString(id);
@@ -473,7 +528,7 @@
 
                 SQLiteDataReader reader = command.ExecuteReader();
 
-                while (reader.Read())//enquanto tiver registos pra ler
+                while (reader.Read())
                 {
                     covid19.Add(new Covid19Data
                     {
@@ -518,7 +573,7 @@
             }
             catch (Exception e)
             {
-                dialogService.ShowMessage("sera que da merda aqui??", e.Message);
+                dialogService.ShowMessage("Error", e.Message);
             }
             finally
             {
@@ -541,7 +596,7 @@
             }
             catch (Exception e)
             {
-                dialogService.ShowMessage("Erro", e.Message);
+                dialogService.ShowMessage("Error", e.Message);
             }
             finally
             {

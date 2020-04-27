@@ -10,6 +10,12 @@
     using System.Threading.Tasks;
     public class APIService
     {
+        public const string url = "http://restcountries.eu/rest/v2/";
+        public const string path = "all";
+
+        public const string urlExtra = "https://coronavirus-19-api.herokuapp.com/";
+        public const string pathExtra = "countries";
+
         public async Task<Response> GetCountries(string urlBase, string apiPath)
         {
             try
@@ -55,11 +61,11 @@
         {
             try
             {
-                var client = new HttpClient(); 
+                var client = new HttpClient();
 
-                client.BaseAddress = new Uri(urlBase); 
+                client.BaseAddress = new Uri(urlBase);
 
-                var response = await client.GetAsync(apiPath); 
+                var response = await client.GetAsync(apiPath);
 
                 var result = await response.Content.ReadAsStringAsync();
 

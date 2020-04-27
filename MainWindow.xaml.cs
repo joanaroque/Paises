@@ -2,8 +2,13 @@
 {
     using Models;
     using Services;
+    using Svg;
     using System;
     using System.Collections.Generic;
+    using System.Drawing;
+    using System.IO;
+    using System.Net;
+    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Windows;
@@ -21,8 +26,8 @@
         private NetworkService networkService;
         private APIService apiService;
         private DataService dataServices;
-
         #endregion
+
 
         public MainWindow()
         {
@@ -33,13 +38,13 @@
             dataServices = new DataService();
 
             LoadCountries();
+            Loading();
             LoadCovid19Data();
-
         }
 
         private async void LoadCovid19Data()
         {
-            dataServices.CreateDataCovid19();
+            await dataServices.CreateDataCovid19();
 
             var connection = networkService.CheckConnection();
 
@@ -53,7 +58,7 @@
                 await LoadApiCountriesCovid19();
             }
 
-            if (Corona.Count == 0) //lista de dados de covid19 nao foi carregada
+            if (Corona.Count == 0)
             {
                 InfoToUser();
 
@@ -72,13 +77,13 @@
 
         private async Task LoadApiCountriesCovid19()
         {
-            var response = await apiService.GetCovid19Data("https://coronavirus-19-api.herokuapp.com/", "countries");
+            var response = await apiService.GetCovid19Data(APIService.urlExtra, APIService.pathExtra);
 
-            Corona = (List<Covid19Data>)response.Result; // vai buscar a referencia da lista
+            Corona = (List<Covid19Data>)response.Result;
 
             dataServices.DeleteDataCovid19();
 
-            dataServices.SaveDataCovid19(Corona);
+            await dataServices.SaveDataCovid19(Corona);
         }
 
         private void LoadLocalCovid19Data()
@@ -88,10 +93,10 @@
 
         private async void LoadCountries()
         {
-            dataServices.CreateDataCountries();
-            dataServices.CreateDataCurrencies();
-            dataServices.CreateDataLanguages();
-            dataServices.CreateDataTranslations();
+            await dataServices.CreateDataCountries();
+            await dataServices.CreateDataCurrencies();
+            await dataServices.CreateDataLanguages();
+            await dataServices.CreateDataTranslations();
 
             bool load;
 
@@ -108,10 +113,11 @@
             else
             {
                 await LoadApiCountries();
+                DownloadFlags();
                 load = true;
             }
 
-            if (Countries.Count == 0) //lista de paises nao foi carregada
+            if (Countries.Count == 0)
             {
                 InfoToUser();
 
@@ -121,12 +127,9 @@
             cbCountry.ItemsSource = Countries;
             cbCountry.DisplayMemberPath = "Name";
 
-
-            pb.Value = 100;
-
             lblResult.Content = "Countries update!";
 
-            if (load) // API carregou
+            if (load)
             {
                 lblStatus.Content = string.Format($"Countries downloaded from the internet in {DateTime.Now}");
             }
@@ -134,24 +137,20 @@
             {
                 lblStatus.Content = "Countries downloaded from Data Base.";
             }
-
-            pb.Value = 100;
         }
 
         private async Task LoadApiCountries()
         {
-            pb.Value = 0;
+            var response = await apiService.GetCountries(APIService.url, APIService.path);
 
-            /*onde está o endereço base da API
-            vai buscar a apiPath
-            enquanto carrega a api, a aplicação tem que estar a correr á mesma*/
-            var response = await apiService.GetCountries("http://restcountries.eu/rest/v2/", "all");
-
-            Countries = (List<RootObject>)response.Result; // vai buscar a referencia da lista
+            Countries = (List<RootObject>)response.Result;
 
             dataServices.DeleteDataCountries();
 
-            dataServices.SaveDataCountries(Countries);
+            await dataServices.SaveDataCountries(Countries);
+            await dataServices.SaveCurrencies();
+            await dataServices.SaveLanguages();
+            await dataServices.SaveTranslations();
         }
 
         private void LoadLocalCountries()
@@ -159,17 +158,77 @@
             Countries = dataServices.GetDataCountries();
         }
 
+        private void DownloadFlags()
+        {
+            WebClient client = new WebClient();
+            foreach (var country in Countries)
+            {
+                try
+                {
+            
+                        client.DownloadFile(country.Flag, $@"LocalFlags\{country.Alpha3Code}.svg");
+
+                        ConvertSvgToJpg(country);
+               
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error");
+                }
+            }
+            client.Dispose();
+        }
+
+        private async void Loading()
+        {
+            while (!apiService.GetCountries(APIService.url, APIService.path).IsCompleted)
+            {
+                pb.Value++;
+                await Task.Delay(1);
+            }
+        }
+
+        private void ConvertSvgToJpg(RootObject country)
+        {
+            try
+            {
+                string flagSvg = $@"LocalFlags\{country.Alpha3Code}.svg";
+
+                var svg = SvgDocument.Open(flagSvg);
+
+                Bitmap map = svg.Draw(400, 230);
+
+                string flagJpg = $@"FlagsJpeg\{country.Alpha3Code}.jpg";
+
+                map.Save(flagJpg);
+            }
+            catch (Exception ex)
+            {
+               //TODO MessageBox.Show(ex.Message, "Error Converting svg to jpg");
+            }
+
+        }
+        private void SetFlagImage(RootObject currentCountry)
+        {
+            BitmapImage bitmap = new BitmapImage();
+
+            bitmap.BeginInit();
+            bitmap.UriSource = new Uri(AppDomain.CurrentDomain.BaseDirectory + $@"FlagsJpeg\{currentCountry.Alpha3Code}.jpg", UriKind.Absolute);
+            bitmap.EndInit();
+
+            Flag.Source = bitmap;
+        }
         private void CbCountry_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             RootObject currentCountry = Countries[cbCountry.SelectedIndex];
 
             try
             {
-                Flag.Source = new BitmapImage(new Uri($@"\Resources\{currentCountry.Name.ToLower()}.png", UriKind.Relative));
+                SetFlagImage(currentCountry);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Flag.Source = new BitmapImage(new Uri(@"\Resources\image.jpg", UriKind.Relative));
+                MessageBox.Show(ex.Message, "Error");
             }
 
             lblCapital.Content = $"Capital: {currentCountry.Capital}";
@@ -193,26 +252,31 @@
 
             lblDe.Content = $"German: {currentCountry.Translations.De}";
             lblEs.Content = $"Spanish: {currentCountry.Translations.Es}";
-            lblFr.Content = $"French: {currentCountry.Translations.Fr}";
-            lblJa.Content = $"Japanese: {currentCountry.Translations.Ja}";
+            lblFr.Content = $"French:  {currentCountry.Translations.Fr}";
+            lblJa.Content = $"Japanese:{currentCountry.Translations.Ja}";
             lblIt.Content = $"Italian: {currentCountry.Translations.It}";
             lblBr.Content = $"Brazilian: {currentCountry.Translations.Br}";
             lblPt.Content = $"Portuguese: {currentCountry.Translations.Pt}";
             lblNl.Content = $"Dutch: {currentCountry.Translations.Nl}";
             lblHr.Content = $"Croatian: {currentCountry.Translations.Hr}";
-            lblFa.Content = $"Arabian: {currentCountry.Translations.Fa}";//Todo se alguma propriedade nao existir, mostrar X 
+            lblFa.Content = $"Arabian: {currentCountry.Translations.Fa}";
 
+            foreach(Covid19Data covidCountry  in Corona)
+            {
+                if(covidCountry.Country.Equals(currentCountry.Name))
+                {
 
-            Covid19Data currentCountryCovid = Corona[cbCountry.SelectedIndex];
-
-            lblCases.Content = $"Cases: {currentCountryCovid.Cases}";
-            lblTodayCases.Content = $"Today Cases: {currentCountryCovid.TodayCases}";
-            lblDeaths.Content = $"Deaths: {currentCountryCovid.Deaths}";
-            lblTodayDeaths.Content = $"Today Deaths: {currentCountryCovid.TodayDeaths}";
-            lblRecovered.Content = $"Recovered: {currentCountryCovid.Recovered}";
-            lblActive.Content = $"Active: {currentCountryCovid.Active}";
-            lblCritical.Content = $"Critical: {currentCountryCovid.Critical}";
-            lblCasesPerOneMillion.Content = $"Cases Per One Million: {currentCountryCovid.CasesPerOneMillion}";
+                    lblCases.Content = $"Cases: {covidCountry.Cases}";
+                    lblTodayCases.Content = $"Today Cases: {covidCountry.TodayCases}";
+                    lblDeaths.Content = $"Deaths: {covidCountry.Deaths}";
+                    lblTodayDeaths.Content = $"Today Deaths: {covidCountry.TodayDeaths}";
+                    lblRecovered.Content = $"Recovered: {covidCountry.Recovered}";
+                    lblActive.Content = $"Active: {covidCountry.Active}";
+                    lblCritical.Content = $"Critical: {covidCountry.Critical}";
+                    lblCasesPerOneMillion.Content = $"Cases Per One Million: {covidCountry.CasesPerOneMillion}";
+                    break;
+                }
+            }
 
         }
     }
