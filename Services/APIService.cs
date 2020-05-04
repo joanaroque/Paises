@@ -39,7 +39,7 @@
                     };
                 }
 
-                var countries = JsonConvert.DeserializeObject<List<RootObject>>(result, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                var countries = JsonConvert.DeserializeObject<List<Country>>(result, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
                 return new Response
                 {

@@ -1,7 +1,7 @@
 ﻿namespace Countries.Models
 {
     using System.Collections.Generic;
-    public class RootObject
+    public class Country
     {
         public string Name { get; set; }
         public List<string> TopLevelDomain { get; set; }

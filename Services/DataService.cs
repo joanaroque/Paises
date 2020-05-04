@@ -21,7 +21,7 @@
 
         private const string DataName = "Data";
 
-        public async Task CreateDataCountries()
+        public void CreateDataCountries()
         {
             dialogService = new DialogService();
 
@@ -32,7 +32,7 @@
             try
             {
                 connection = new SQLiteConnection("Data Source=" + Path);
-                await connection.OpenAsync();
+                connection.Open();
 
                 string sqlcommand = "create table if not exists Countries " +
                     "(Alpha2Code varchar(2), Name varchar(50), Capital varchar(50), " +
@@ -42,18 +42,18 @@
 
                 command = new SQLiteCommand(sqlcommand, connection);
 
-               await command.ExecuteNonQueryAsync();
+                command.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
-                dialogService.ShowMessage("Error", ex.Message);
+                dialogService.ShowMessage(ex.Message, "Error");
             }
             finally
             {
                 connection.Close();
             }
         }
-        public async Task CreateDataCurrencies()
+        public void CreateDataCurrencies()
         {
             dialogService = new DialogService();
 
@@ -65,7 +65,7 @@
             try
             {
                 connection = new SQLiteConnection("Data Source=" + Path);
-                await connection.OpenAsync();
+                connection.Open();
 
                 string sqlcommand = "create table if not exists currencies " +
                     "(Alpha2Code varchar(2), Code varchar(10), CurrencyName varchar(50)," +
@@ -73,18 +73,18 @@
 
                 command = new SQLiteCommand(sqlcommand, connection);
 
-               await command.ExecuteNonQueryAsync();
+                command.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
-                dialogService.ShowMessage("Error", ex.Message);
+                dialogService.ShowMessage(ex.Message, "Error");
             }
             finally
             {
                 connection.Close();
             }
         }
-        public async Task CreateDataTranslations()
+        public void CreateDataTranslations()
         {
             dialogService = new DialogService();
 
@@ -96,7 +96,7 @@
             try
             {
                 connection = new SQLiteConnection("Data Source=" + Path);
-                await connection.OpenAsync();
+                connection.Open();
 
                 string sqlcommand = "create table if not exists translations " +
                     "(Alpha2Code varchar(2), De varchar(50), Es varchar(50)," +
@@ -106,18 +106,18 @@
 
                 command = new SQLiteCommand(sqlcommand, connection);
 
-               await command.ExecuteNonQueryAsync();
+                command.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
-                dialogService.ShowMessage("Error", ex.Message);
+                dialogService.ShowMessage(ex.Message, "Error");
             }
             finally
             {
                 connection.Close();
             }
         }
-        public async Task CreateDataLanguages()
+        public void CreateDataLanguages()
         {
             dialogService = new DialogService();
 
@@ -129,7 +129,7 @@
             try
             {
                 connection = new SQLiteConnection("Data Source=" + Path);
-                await connection.OpenAsync();
+                connection.Open();
 
                 string sqlcommand = "create table if not exists Languages " +
                     "(Alpha2Code varchar(2), LanguageName varchar(50)," +
@@ -137,18 +137,18 @@
 
                 command = new SQLiteCommand(sqlcommand, connection);
 
-               await command.ExecuteNonQueryAsync();
+                command.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
-                dialogService.ShowMessage("Error", ex.Message);
+                dialogService.ShowMessage(ex.Message, "Error");
             }
             finally
             {
                 connection.Close();
             }
         }
-        public async Task CreateDataCovid19()
+        public void CreateDataCovid19()
         {
             dialogService = new DialogService();
 
@@ -160,7 +160,7 @@
             try
             {
                 connection = new SQLiteConnection("Data Source=" + PathCovid19);
-                await connection.OpenAsync();
+                connection.Open();
 
                 string sqlcommand = "create table if not exists Covid19 " +
                     "(Country varchar(50), Cases int, " +
@@ -170,18 +170,18 @@
 
                 command = new SQLiteCommand(sqlcommand, connection);
 
-               await command.ExecuteNonQueryAsync();
+                command.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
-                dialogService.ShowMessage("Error", ex.Message);
+                dialogService.ShowMessage(ex.Message, "Error");
             }
             finally
             {
                 connection.Close();
             }
         }
-        public async Task SaveDataCountries(List<RootObject> Countries)
+        public void SaveDataCountries(List<Country> Countries)
         {
             connection = new SQLiteConnection("Data Source=" + Path);
 
@@ -191,7 +191,7 @@
             {
                 command = new SQLiteCommand(sqlCountry, connection);
 
-                await connection.OpenAsync();
+                connection.Open();
 
                 foreach (var country in Countries)
                 {
@@ -204,21 +204,21 @@
                     command.Parameters.Add(new SQLiteParameter("@Gini", country.Gini));
                     command.Parameters.Add(new SQLiteParameter("@Flag", country.Flag));
 
-                   await command.ExecuteNonQueryAsync();
+                     command.ExecuteNonQuery();
                 }
             }
             catch (Exception ex)
             {
-                dialogService.ShowMessage("Error", ex.Message);
+                dialogService.ShowMessage(ex.Message, "Error");
             }
             finally
             {
                 connection.Close();
             }
         }
-        public async Task SaveCurrencies()
+        public void SaveCurrencies()
         {
-            List<RootObject> Countries = new List<RootObject>();
+            List<Country> Countries = new List<Country>();
 
             connection = new SQLiteConnection("Data Source=" + Path);
 
@@ -229,7 +229,7 @@
             {
                 command = new SQLiteCommand(sqlCurrencies, connection);
 
-                await connection.OpenAsync();
+                connection.Open();
 
                 foreach (var country in Countries)
                 {
@@ -242,22 +242,22 @@
                         command.Parameters.Add(new SQLiteParameter("@CurrencyName", currency.Name));
                         command.Parameters.Add(new SQLiteParameter("@Symbol", currency.Symbol));
 
-                       await command.ExecuteNonQueryAsync();
+                         command.ExecuteNonQuery();
                     }
                 }
             }
             catch (Exception ex)
             {
-                dialogService.ShowMessage("Error", ex.Message);
+                dialogService.ShowMessage(ex.Message, "Error");
             }
             finally
             {
                 connection.Close();
             }
         }
-        public async Task SaveLanguages()
+        public void SaveLanguages()
         {
-            List<RootObject> Countries = new List<RootObject>();
+            List<Country> Countries = new List<Country>();
 
             connection = new SQLiteConnection("Data Source=" + Path);
 
@@ -268,7 +268,7 @@
             {
                 command = new SQLiteCommand(sqlLanguages, connection);
 
-                await connection.OpenAsync();
+                connection.Open();
 
                 foreach (var country in Countries)
                 {
@@ -281,22 +281,22 @@
                         command.Parameters.Add(new SQLiteParameter("@LanguageName", language.Name));
                         command.Parameters.Add(new SQLiteParameter("@NativeName", language.NativeName));
 
-                       await command.ExecuteNonQueryAsync();
+                         command.ExecuteNonQuery();
                     }
                 }
             }
             catch (Exception ex)
             {
-                dialogService.ShowMessage("Error", ex.Message);
+                dialogService.ShowMessage(ex.Message, "Error");
             }
             finally
             {
                 connection.Close();
             }
         }
-        public async Task SaveTranslations()
+        public void SaveTranslations()
         {
-            List<RootObject> Countries = new List<RootObject>();
+            List<Country> Countries = new List<Country>();
 
             connection = new SQLiteConnection("Data Source=" + Path);
 
@@ -307,7 +307,7 @@
             {
                 command = new SQLiteCommand(sqlTranslation, connection);
 
-                await connection.OpenAsync();
+                connection.Open();
 
                 foreach (var country in Countries)
                 {
@@ -325,25 +325,25 @@
                     command.Parameters.Add(new SQLiteParameter("@Hr", country.Translations.Hr));
                     command.Parameters.Add(new SQLiteParameter("@Fa", country.Translations.Fa));
 
-                   await command.ExecuteNonQueryAsync();
+                     command.ExecuteNonQuery();
                 }
             }
             catch (Exception ex)
             {
-                dialogService.ShowMessage("Error", ex.Message);
+                dialogService.ShowMessage(ex.Message, "Error");
             }
             finally
             {
                 connection.Close();
             }
         }
-        public async Task SaveDataCovid19(List<Covid19Data> Corona)
+        public void SaveDataCovid19(List<Covid19Data> Corona)
         {
             connection = new SQLiteConnection("Data Source=" + PathCovid19);
 
             try
             {
-                await connection.OpenAsync();
+                connection.Open();
 
                 foreach (var covid19 in Corona)
                 {
@@ -363,23 +363,23 @@
                     command.Parameters.Add(new SQLiteParameter("@Critical", covid19.Critical));
                     command.Parameters.Add(new SQLiteParameter("@CasesPerOneMillion", covid19.CasesPerOneMillion));
 
-                  await command.ExecuteNonQueryAsync();
+                     command.ExecuteNonQuery();
                 }
             }
             catch (Exception ex)
             {
-                dialogService.ShowMessage("Error", ex.Message); // passa este
+                dialogService.ShowMessage(ex.Message, "Error");
             }
             finally
             {
                 connection.Close();
             }
         }
-        public List<RootObject> GetDataCountries()
+        public async Task<List<Country>> GetDataCountries()
         {
-            List<RootObject> countries = new List<RootObject>();
+            List<Country> countries = new List<Country>();
 
-            connection = new SQLiteConnection("Data Source=" + Path);
+            SQLiteConnection connection = new SQLiteConnection("Data Source=" + Path);
 
             string countriesSql = "select Alpha2Code, Name, Capital, Region, Subregion, Population, Gini, Flag from Countries";
 
@@ -391,7 +391,7 @@
 
                 while (countriesReader.Read())
                 {
-                    RootObject currentCountry = new RootObject
+                    Country currentCountry = new Country
                     {
                         Alpha2Code = GetDBStringValue(countriesReader, 0),
                         Name = GetDBStringValue(countriesReader, 1),
@@ -427,7 +427,7 @@
                     }
                     catch (Exception e)
                     {
-                        dialogService.ShowMessage("Error", e.Message);
+                        dialogService.ShowMessage(e.Message, "Error");
                         return null;
                     }
 
@@ -454,7 +454,7 @@
                     }
                     catch (Exception e)
                     {
-                        dialogService.ShowMessage("Error", e.Message);
+                        dialogService.ShowMessage(e.Message, "Error");
                         return null;
                     }
 
@@ -487,7 +487,7 @@
                     }
                     catch (Exception e)
                     {
-                        dialogService.ShowMessage("Error", e.Message);
+                        dialogService.ShowMessage(e.Message, "Error");
                         return null;
                     }
                     countries.Add(currentCountry);
@@ -497,8 +497,12 @@
             }
             catch (Exception e)
             {
-                dialogService.ShowMessage("Error", e.Message);
+                dialogService.ShowMessage(e.Message, "Error");
                 return null;
+            }
+            finally
+            {
+                connection.Close();
             }
         }
         /// <summary>
@@ -549,7 +553,7 @@
 
             catch (Exception e)
             {
-                dialogService.ShowMessage("Error", e.Message);
+                dialogService.ShowMessage(e.Message, "Error");
                 return null;
             }
             finally
@@ -569,11 +573,11 @@
 
                 command = new SQLiteCommand(sql, connection);
 
-                command.ExecuteNonQuery();
+                 command.ExecuteNonQuery();
             }
             catch (Exception e)
             {
-                dialogService.ShowMessage("Error", e.Message);
+                dialogService.ShowMessage(e.Message, "Error");
             }
             finally
             {
@@ -596,7 +600,7 @@
             }
             catch (Exception e)
             {
-                dialogService.ShowMessage("Error", e.Message);
+                dialogService.ShowMessage(e.Message, "Error");
             }
             finally
             {

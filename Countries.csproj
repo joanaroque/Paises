@@ -149,7 +149,7 @@
     <Compile Include="Models\Currency.cs" />
     <Compile Include="Models\Language.cs" />
     <Compile Include="Models\Response.cs" />
-    <Compile Include="Models\RootObject.cs" />
+    <Compile Include="Models\Country.cs" />
     <Compile Include="Models\Translations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

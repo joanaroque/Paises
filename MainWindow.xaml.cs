@@ -21,7 +21,7 @@
     public partial class MainWindow : Window
     {
         #region Attributes
-        private List<RootObject> Countries;
+        private List<Country> Countries;
         private List<Covid19Data> Corona;
         private NetworkService networkService;
         private APIService apiService;
@@ -38,13 +38,12 @@
             dataServices = new DataService();
 
             LoadCountries();
-            Loading();
             LoadCovid19Data();
         }
 
         private async void LoadCovid19Data()
         {
-            await dataServices.CreateDataCovid19();
+            dataServices.CreateDataCovid19();
 
             var connection = networkService.CheckConnection();
 
@@ -74,16 +73,24 @@
 
             lblStatus.Content = "First boot should have internet connection.";
         }
-
+        /// <summary>
+        /// If the result of response diferent from null, gest the list with info covid
+        /// else, gets an empty list
+        /// </summary>
+        /// <returns>populating a list</returns>
         private async Task LoadApiCountriesCovid19()
         {
-            var response = await apiService.GetCovid19Data(APIService.urlExtra, APIService.pathExtra);
+            Task<Response> taskResponse = apiService.GetCovid19Data(APIService.urlExtra, APIService.pathExtra);
 
-            Corona = (List<Covid19Data>)response.Result;
+            var response = await taskResponse;
 
-            dataServices.DeleteDataCovid19();
+            Corona = response.Result != null ? (List<Covid19Data>)response.Result : new List<Covid19Data>(); 
 
-            await dataServices.SaveDataCovid19(Corona);
+            if (Corona.Count > 0)
+            {
+                dataServices.DeleteDataCovid19();
+                dataServices.SaveDataCovid19(Corona);
+            }
         }
 
         private void LoadLocalCovid19Data()
@@ -93,10 +100,10 @@
 
         private async void LoadCountries()
         {
-            await dataServices.CreateDataCountries();
-            await dataServices.CreateDataCurrencies();
-            await dataServices.CreateDataLanguages();
-            await dataServices.CreateDataTranslations();
+            dataServices.CreateDataCountries();
+            dataServices.CreateDataCurrencies();
+            dataServices.CreateDataLanguages();
+            dataServices.CreateDataTranslations();
 
             bool load;
 
@@ -120,7 +127,6 @@
             if (Countries.Count == 0)
             {
                 InfoToUser();
-
                 return;
             }
 
@@ -128,6 +134,8 @@
             cbCountry.DisplayMemberPath = "Name";
 
             lblResult.Content = "Countries update!";
+
+            pb.Value = 100;
 
             if (load)
             {
@@ -141,35 +149,58 @@
 
         private async Task LoadApiCountries()
         {
-            var response = await apiService.GetCountries(APIService.url, APIService.path);
+            Task<Response> taskResponse = apiService.GetCountries(APIService.url, APIService.path);
 
-            Countries = (List<RootObject>)response.Result;
+            while (!taskResponse.IsCompleted)
+            {
+                pb.Value++;
+                await Task.Delay(1);
+            }
 
-            dataServices.DeleteDataCountries();
+            pb.Value = 50;
 
-            await dataServices.SaveDataCountries(Countries);
-            await dataServices.SaveCurrencies();
-            await dataServices.SaveLanguages();
-            await dataServices.SaveTranslations();
+            var response = await taskResponse;
+
+            Countries = response.Result != null ? (List<Country>)response.Result : new List<Country>();
+
+            if (Countries.Count > 0)
+            {
+                dataServices.DeleteDataCountries();
+
+                dataServices.SaveDataCountries(Countries);
+                dataServices.SaveCurrencies();
+                dataServices.SaveLanguages();
+                dataServices.SaveTranslations();
+            }
+
+            pb.Value = 75;
         }
 
-        private void LoadLocalCountries()
+        private async void LoadLocalCountries()
         {
-            Countries = dataServices.GetDataCountries();
+            Countries = await dataServices.GetDataCountries();
+
+            while (!dataServices.GetDataCountries().IsCompleted)
+            {
+                pb.Value++;
+                await Task.Delay(1);
+            }
         }
 
         private void DownloadFlags()
         {
             WebClient client = new WebClient();
+
             foreach (var country in Countries)
             {
                 try
                 {
-            
+                    if (!File.Exists($@"FlagsJpeg\{country.Alpha3Code}.jpg"))
+                    {
                         client.DownloadFile(country.Flag, $@"LocalFlags\{country.Alpha3Code}.svg");
 
-                        ConvertSvgToJpg(country);
-               
+                        ConvertSvgToJpg(country.Alpha3Code);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -179,36 +210,27 @@
             client.Dispose();
         }
 
-        private async void Loading()
-        {
-            while (!apiService.GetCountries(APIService.url, APIService.path).IsCompleted)
-            {
-                pb.Value++;
-                await Task.Delay(1);
-            }
-        }
-
-        private void ConvertSvgToJpg(RootObject country)
+        private void ConvertSvgToJpg(string Alpha3Code)
         {
             try
             {
-                string flagSvg = $@"LocalFlags\{country.Alpha3Code}.svg";
+                string flagSvg = $@"LocalFlags\{Alpha3Code}.svg";
 
                 var svg = SvgDocument.Open(flagSvg);
 
                 Bitmap map = svg.Draw(400, 230);
 
-                string flagJpg = $@"FlagsJpeg\{country.Alpha3Code}.jpg";
+                string flagJpg = $@"FlagsJpeg\{Alpha3Code}.jpg";
 
                 map.Save(flagJpg);
             }
             catch (Exception ex)
             {
-               //TODO MessageBox.Show(ex.Message, "Error Converting svg to jpg");
+                MessageBox.Show(ex.Message, "Error");
             }
 
         }
-        private void SetFlagImage(RootObject currentCountry)
+        private void SetFlagImage(Country currentCountry)
         {
             BitmapImage bitmap = new BitmapImage();
 
@@ -218,9 +240,10 @@
 
             Flag.Source = bitmap;
         }
+
         private void CbCountry_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            RootObject currentCountry = Countries[cbCountry.SelectedIndex];
+            Country currentCountry = Countries[cbCountry.SelectedIndex];
 
             try
             {
@@ -230,6 +253,7 @@
             {
                 MessageBox.Show(ex.Message, "Error");
             }
+
 
             lblCapital.Content = $"Capital: {currentCountry.Capital}";
             lblRegion.Content = $"Region: {currentCountry.Region}";
@@ -261,11 +285,19 @@
             lblHr.Content = $"Croatian: {currentCountry.Translations.Hr}";
             lblFa.Content = $"Arabian: {currentCountry.Translations.Fa}";
 
-            foreach(Covid19Data covidCountry  in Corona)
+            foreach (Covid19Data covidCountry in Corona)
             {
-                if(covidCountry.Country.Equals(currentCountry.Name))
-                {
+                lblCases.Content = "";
+                lblTodayCases.Content = "";
+                lblDeaths.Content = "";
+                lblTodayDeaths.Content = "";
+                lblRecovered.Content = "";
+                lblActive.Content = "";
+                lblCritical.Content = "";
+                lblCasesPerOneMillion.Content = "";
 
+                if (covidCountry.Country.Equals(currentCountry.Name))
+                {
                     lblCases.Content = $"Cases: {covidCountry.Cases}";
                     lblTodayCases.Content = $"Today Cases: {covidCountry.TodayCases}";
                     lblDeaths.Content = $"Deaths: {covidCountry.Deaths}";
@@ -277,7 +309,6 @@
                     break;
                 }
             }
-
         }
     }
 }
