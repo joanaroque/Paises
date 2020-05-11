@@ -3,12 +3,12 @@
     using Models;
     using System.Net;
 
-    public class NetworkService
+    public static class NetworkService
     {
         // esta classe vai ver se temos ligaçao á net, 
         //para ir buscar os dados á API, ou se vai buscar á base de dados
 
-        public Response CheckConnection()//retorna objeto do tipo Response
+        public static Response CheckConnection()//retorna objeto do tipo Response
         {
             var client = new WebClient();
 

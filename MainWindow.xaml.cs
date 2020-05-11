@@ -1,6 +1,7 @@
 ﻿namespace Countries
 {
     using Models;
+    using Paises.Models;
     using Services;
     using Svg;
     using System;
@@ -8,12 +9,10 @@
     using System.Drawing;
     using System.IO;
     using System.Net;
-    using System.Text;
-    using System.Threading;
     using System.Threading.Tasks;
     using System.Windows;
-    using System.Windows.Media;
     using System.Windows.Media.Imaging;
+    using System.Windows.Threading;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -23,9 +22,6 @@
         #region Attributes
         private List<Country> Countries;
         private List<Covid19Data> Corona;
-        private NetworkService networkService;
-        private APIService apiService;
-        private DataService dataServices;
         #endregion
 
 
@@ -33,9 +29,6 @@
         {
             InitializeComponent();
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            networkService = new NetworkService();
-            apiService = new APIService();
-            dataServices = new DataService();
 
             LoadCountries();
             LoadCovid19Data();
@@ -43,15 +36,14 @@
 
         private async void LoadCovid19Data()
         {
-            dataServices.CreateDataCovid19();
+            DataService.CreateDataCovid19();
 
-            var connection = networkService.CheckConnection();
+            var connection = NetworkService.CheckConnection();
 
             if (!connection.IsSuccess)
             {
                 LoadLocalCovid19Data();
             }
-
             else
             {
                 await LoadApiCountriesCovid19();
@@ -80,36 +72,38 @@
         /// <returns>populating a list</returns>
         private async Task LoadApiCountriesCovid19()
         {
-            Task<Response> taskResponse = apiService.GetCovid19Data(APIService.urlExtra, APIService.pathExtra);
+            Progress<ProgressReport> progress = new Progress<ProgressReport>();
+            progress.ProgressChanged += ReportProgress;
 
-            var response = await taskResponse;
+            var response = await APIService.GetCovid19Data(APIService.urlExtra, APIService.pathExtra);
 
-            Corona = response.Result != null ? (List<Covid19Data>)response.Result : new List<Covid19Data>(); 
+
+            Corona = response.Result != null ? (List<Covid19Data>)response.Result : new List<Covid19Data>();
 
             if (Corona.Count > 0)
             {
-                dataServices.DeleteDataCovid19();
-                dataServices.SaveDataCovid19(Corona);
+                DataService.DeleteDataCovid19();
+                DataService.SaveDataCovid19(Corona, progress);
             }
         }
 
         private void LoadLocalCovid19Data()
         {
-            Corona = dataServices.GetDataCovid19();
+            Corona = DataService.GetDataCovid19();
         }
 
         private async void LoadCountries()
         {
-            dataServices.CreateDataCountries();
-            dataServices.CreateDataCurrencies();
-            dataServices.CreateDataLanguages();
-            dataServices.CreateDataTranslations();
+            DataService.CreateDataCountries();
+            DataService.CreateDataCurrencies();
+            DataService.CreateDataLanguages();
+            DataService.CreateDataTranslations();
 
             bool load;
 
-            lblResult.Content = "Update Countries...";
 
-            var connection = networkService.CheckConnection();
+
+            var connection = NetworkService.CheckConnection();
 
             if (!connection.IsSuccess)
             {
@@ -120,7 +114,7 @@
             else
             {
                 await LoadApiCountries();
-                DownloadFlags();
+                await DownloadFlags();
                 load = true;
             }
 
@@ -135,7 +129,7 @@
 
             lblResult.Content = "Countries update!";
 
-            pb.Value = 100;
+
 
             if (load)
             {
@@ -145,69 +139,86 @@
             {
                 lblStatus.Content = "Countries downloaded from Data Base.";
             }
+            //gif.Visibility = Visibility.Hidden;
         }
 
         private async Task LoadApiCountries()
         {
-            Task<Response> taskResponse = apiService.GetCountries(APIService.url, APIService.path);
+            Progress<ProgressReport> progress = new Progress<ProgressReport>();
+            progress.ProgressChanged += ReportProgress;
 
-            while (!taskResponse.IsCompleted)
-            {
-                pb.Value++;
-                await Task.Delay(1);
-            }
 
-            pb.Value = 50;
 
-            var response = await taskResponse;
+            var response = await APIService.GetCountries(APIService.url, APIService.path);
+
 
             Countries = response.Result != null ? (List<Country>)response.Result : new List<Country>();
 
+
+
             if (Countries.Count > 0)
             {
-                dataServices.DeleteDataCountries();
+                Task task = Task.Run(() =>
 
-                dataServices.SaveDataCountries(Countries);
-                dataServices.SaveCurrencies();
-                dataServices.SaveLanguages();
-                dataServices.SaveTranslations();
+                {
+                    Console.WriteLine($"Deleting previous countries now: {DateTime.Now}");
+                    DataService.DeleteDataCountries();
+                    Console.WriteLine($"Saving countries now: {DateTime.Now}");
+                    DataService.SaveDataCountries(Countries, progress);
+                    Console.WriteLine($"Saved countries now: {DateTime.Now}");
+
+                });
             }
 
-            pb.Value = 75;
+
+        }
+
+
+
+        private void ReportProgress(object sender, ProgressReport e)
+        {
+            pb.Value = e.Percentage;
+
+            if (Countries.Count == 250 && pb.Value == 0)
+            {
+                lblStatus.Content = "Updating database...";
+            }
         }
 
         private async void LoadLocalCountries()
         {
-            Countries = await dataServices.GetDataCountries();
+            Progress<ProgressReport> progress = new Progress<ProgressReport>();
+            progress.ProgressChanged += ReportProgress;
 
-            while (!dataServices.GetDataCountries().IsCompleted)
-            {
-                pb.Value++;
-                await Task.Delay(1);
-            }
+            await DataService.GetDataCountries(progress);
+
+
         }
 
-        private void DownloadFlags()
+        private async Task DownloadFlags()
         {
-            WebClient client = new WebClient();
-
-            foreach (var country in Countries)
+            await Task.Run(() =>
             {
-                try
+                using (WebClient client = new WebClient())
                 {
-                    if (!File.Exists($@"FlagsJpeg\{country.Alpha3Code}.jpg"))
+                    foreach (var country in Countries)
                     {
-                        client.DownloadFile(country.Flag, $@"LocalFlags\{country.Alpha3Code}.svg");
+                        try
+                        {
+                            if (!File.Exists($@"FlagsJpeg\{country.Alpha3Code}.jpg"))
+                            {
+                                client.DownloadFile(country.Flag, $@"LocalFlags\{country.Alpha3Code}.svg");
 
-                        ConvertSvgToJpg(country.Alpha3Code);
+                                ConvertSvgToJpg(country.Alpha3Code);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "Error");
+                        }
                     }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Error");
-                }
-            }
-            client.Dispose();
+            });
         }
 
         private void ConvertSvgToJpg(string Alpha3Code)
@@ -228,7 +239,6 @@
             {
                 MessageBox.Show(ex.Message, "Error");
             }
-
         }
         private void SetFlagImage(Country currentCountry)
         {

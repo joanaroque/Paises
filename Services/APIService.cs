@@ -8,22 +8,28 @@
     using System.Net.Http;
     using System.Text;
     using System.Threading.Tasks;
-    public class APIService
+    public static class APIService
     {
         public const string url = "http://restcountries.eu/rest/v2/";
         public const string path = "all";
 
         public const string urlExtra = "https://coronavirus-19-api.herokuapp.com/";
         public const string pathExtra = "countries";
-
-        public async Task<Response> GetCountries(string urlBase, string apiPath)
+        /// <summary>
+        /// Connect to the api and retrieve the data in it
+        /// </summary>
+        /// <param name="urlBase">Url of the API</param>
+        /// <param name="apiPath">Folder where the data is</param>
+        /// <returns></returns>
+        public static async Task<Response> GetCountries(string urlBase, string apiPath)
         {
             try
             {
                 var client = new HttpClient(); // cliente prepara chamada a um servidor (cliente é alguem que pede algo)
 
                 client.BaseAddress = new Uri(urlBase); // "Qual é a morada que eu vou chamar? (que é sempre um URI)"
-
+                
+                Console.WriteLine($"Fetching countries from API: {DateTime.Now}");
                 var response = await client.GetAsync(apiPath); // para este clt configurado previamente, vai buscar a info dos clints de forma assincrona
 
                 //le a resposta e converte a de binario para string 
@@ -40,7 +46,7 @@
                 }
 
                 var countries = JsonConvert.DeserializeObject<List<Country>>(result, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-
+                Console.WriteLine($"Deserialized countries from json: {DateTime.Now}");
                 return new Response
                 {
                     IsSuccess = true,
@@ -57,7 +63,7 @@
             }
         }
 
-        public async Task<Response> GetCovid19Data(string urlBase, string apiPath)
+        public static async Task<Response> GetCovid19Data(string urlBase, string apiPath)
         {
             try
             {

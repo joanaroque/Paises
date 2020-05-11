@@ -2,9 +2,9 @@
 {
     using System.Windows;
 
-    internal class DialogService
+    internal static class DialogService
     {
-        internal void ShowMessage(string title, string message)
+        internal static void ShowMessage(string title, string message) // todo: tirar esta treta
         {
             MessageBox.Show(title, message);
         }
