@@ -8,6 +8,7 @@
     using System.Net.Http;
     using System.Text;
     using System.Threading.Tasks;
+
     public static class APIService
     {
         public const string url = "http://restcountries.eu/rest/v2/";
@@ -25,6 +26,8 @@
         {
             try
             {
+                //ProgressReport report = new ProgressReport();
+
                 var client = new HttpClient(); // cliente prepara chamada a um servidor (cliente é alguem que pede algo)
 
                 client.BaseAddress = new Uri(urlBase); // "Qual é a morada que eu vou chamar? (que é sempre um URI)"
@@ -47,6 +50,10 @@
 
                 var countries = JsonConvert.DeserializeObject<List<Country>>(result, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
                 Console.WriteLine($"Deserialized countries from json: {DateTime.Now}");
+
+                //report.Percentage = (countries.Count * 100) / 125;
+                //progress.Report(report);
+
                 return new Response
                 {
                     IsSuccess = true,
@@ -67,6 +74,8 @@
         {
             try
             {
+                //ProgressReport report = new ProgressReport();
+
                 var client = new HttpClient();
 
                 client.BaseAddress = new Uri(urlBase);
@@ -86,6 +95,9 @@
                 }
 
                 var covid19 = JsonConvert.DeserializeObject<List<Covid19Data>>(result, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+
+                //report.Percentage = (covid19.Count * 100) / 125;
+                //progress.Report(report);
 
                 return new Response
                 {

@@ -1,7 +1,6 @@
 ﻿namespace Countries.Services
 {
     using Models;
-    using Paises.Models;
     using System;
     using System.Collections.Generic;
     using System.Data.SQLite;
@@ -30,7 +29,6 @@
             }
             try
             {
-
                 connection.Open();
 
                 string sqlcommand = "create table if not exists Countries " +
@@ -194,11 +192,9 @@
         /// Save the data fetch from the api in the database
         /// </summary>
         /// <param name="Countries">list of countries</param>
-        public static void SaveDataCountries(List<Country> Countries, IProgress<ProgressReport> progress)
+        public static void SaveDataCountries(List<Country> Countries)
         {
-            ProgressReport report = new ProgressReport();
-            int count = 0;
-
+          
             SQLiteConnection connection = new SQLiteConnection("Data Source=" + Path);
 
             string sqlCountry = string.Format("insert into Countries (Alpha3Code, Name, Capital, Region, Subregion, Population, Gini, Flag)" +
@@ -223,21 +219,14 @@
 
                     command.ExecuteNonQuery();
 
-                    progress.Report(report);
+                   
 
-                    Console.WriteLine($"Country: {country.Alpha3Code} - " + DateTime.Now);
+                    LogService.Log($"Country: {country.Alpha3Code}");
+
                     SaveCurrencies(connection, country.Alpha3Code, country.Currencies);
-                    count += 3;
-                    report.Percentage = (count * 100) / 250;
-                    progress.Report(report);
-
-
+                   
                     SaveLanguages(connection, country.Alpha3Code, country.Languages);
-                    count += 3;
-                    report.Percentage = (count * 100) / 250;
-                    progress.Report(report);
-
-
+                   
                     SaveTranslations(connection, country.Alpha3Code, country.Translations);
                 }
             }
@@ -249,9 +238,6 @@
             {
                 connection.Close();
             }
-            count ++;
-            report.Percentage = (count * 100) / 250;
-            progress.Report(report);
         }
         /// <summary>
         /// Save the data fetch from the api in the database
@@ -323,10 +309,8 @@
         /// Save the data fetch from the api in the database
         /// </summary>
         /// <param name="Corona">List of statistics </param>
-        public static void SaveDataCovid19(List<Covid19Data> Corona, IProgress<ProgressReport> progress)
+        public static void SaveDataCovid19(List<Covid19Data> Corona)
         {
-            ProgressReport report = new ProgressReport();
-            int count = 10;
 
             SQLiteConnection connection = new SQLiteConnection("Data Source=" + PathCovid19);
 
@@ -365,14 +349,9 @@
                 connection.Close();
             }
 
-            count++;
-            report.Percentage = (count * 100) / 250;
-            progress.Report(report);
-
         }
-        public static async Task<List<Country>> GetDataCountries(IProgress<ProgressReport> progress)
+        public static async Task<List<Country>> GetDataCountries(IProgress<double> progress)
         {
-            ProgressReport report = new ProgressReport();
 
             List<Country> countries = new List<Country>();
             List<Currency> currencies = new List<Currency>();
@@ -489,11 +468,13 @@
                     }
                     countries.Add(currentCountry);
 
-                    report.Percentage = (countries.Count * 100) / 250;
-                    progress.Report(report);
+                    progress.Report((countries.Count * 100) / 250);
                 }
 
+                LogService.Log("***All countries GET IT!!!!!!!!");
+
                 return countries;
+
             }
             catch (Exception e)
             {

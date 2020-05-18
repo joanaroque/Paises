@@ -4,7 +4,7 @@
 
     internal static class DialogService
     {
-        internal static void ShowMessage(string title, string message) // todo: tirar esta treta
+        internal static void ShowMessage(string title, string message)
         {
             MessageBox.Show(title, message);
         }
