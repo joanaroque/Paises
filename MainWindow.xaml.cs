@@ -1,20 +1,20 @@
-﻿namespace Countries
-{
-    using Models;
-    using Services;
-    using Svg;
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Drawing;
-    using System.IO;
-    using System.Net;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using System.Windows;
-    using System.Windows.Media.Imaging;
-    using WpfAnimatedGif;
+﻿using Countries.Models;
+using Countries.Services;
+using Svg;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.IO;
+using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media.Imaging;
+using WpfAnimatedGif;
 
+namespace Countries
+{
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -35,21 +35,23 @@
             InitializeComponent();
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
-            LoadingGif();
+            GetStartGif();
 
             LoadCountries();
 
             LoadCovid19Data();
 
             pb.Value = 100;
-            
-        }
 
+        }
+        /// <summary>
+        /// if the double value is different from 0, the bar is added
+        /// </summary>
+        /// <param name="number">double</param>
         private void ReportProgress(double number)
         {
             if (number != 0)
             {
-               
                 pb.Value = pb.Value + number;
                 LogService.Log($"Receiving number {number}");
             }
@@ -58,7 +60,13 @@
                 LogService.Log($"Receiving 0");
             }
         }
-
+        /// <summary>
+        /// creates the tables in the database,
+        /// put the method, which tests if there is internet, inside the variable
+        /// if there is no internet, run the method that will retrieve the data,
+        /// previously recorded, from BD
+        /// if there is internet, run asynchronously the method that will get the data from the API
+        /// </summary>
         private void LoadCovid19Data()
         {
             DataService.CreateDataCovid19();
@@ -82,7 +90,9 @@
 
             }
         }
-
+        /// <summary>
+        /// messages, about what is happening, for the user
+        /// </summary>
         private void InfoToUser()
         {
             lblResult.Content = "No internet connection" +
@@ -92,10 +102,12 @@
             lblStatus.Content = "First boot should have internet connection.";
         }
         /// <summary>
-        /// If the result of response diferent from null, gest the list with info covid
-        /// else, gets an empty list
+        /// I wait 5 seconds before fetching the data
+        /// Put into the variable the method that will get the data from the API
+        /// if the result touches the data, the list is filled with them, 
+        /// otherwise an empty list is instantiated
         /// </summary>
-        /// <returns>populating a list</returns>
+        /// <returns></returns>
         private async Task LoadApiCountriesCovid19()
         {
             await Task.Delay(5000);
@@ -109,15 +121,25 @@
                 DataService.DeleteDataCovid19();
                 DataService.SaveDataCovid19(Corona);
             }
-            await Task.Delay(5000);
 
         }
-
+        /// <summary>
+        /// get data from BD
+        /// </summary>
         private void LoadLocalCovid19Data()
         {
             Corona = DataService.GetDataCovid19();
         }
-
+        /// <summary>
+        /// creates the tables for the various attributes
+        /// if there is no internet, run the method that will retrieve the data,
+        /// previously recorded, from BD
+        /// if there is internet, run the method that will get the data from the API,
+        /// and run the method downloadFlags;
+        ///  fill the combobox with the names of the countries;
+        /// if there is internet I give a message to the user informing him of it, 
+        /// if there is not, I inform him that it came from BD
+        /// </summary>
         private async void LoadCountries()
         {
             DataService.CreateDataCountries();
@@ -161,9 +183,12 @@
             else
             {
                 lblStatus.Content = "Countries downloaded from Database.";
-            }    
+            }
         }
-        private void LoadingGif()
+        /// <summary>
+        /// get my initial animated image
+        /// </summary>
+        private void GetStartGif()
         {
             var image = new BitmapImage();
             image.BeginInit();
@@ -171,30 +196,22 @@
             image.EndInit();
             ImageBehavior.SetAnimatedSource(gif, image);
         }
-
+        /// <summary>
+        /// get the data from the API and
+        /// save it in a list, if there is no data, an empty list is created
+        /// </summary>
+        /// <returns>a list of countries or an empty list</returns>
         private async Task LoadApiCountries()
         {
             Task<Response> apiResponse = Task.Run(() => APIService.GetCountries(APIService.url, APIService.path));
-            int count = 0;
-
-            while (!apiResponse.IsCompleted)
-            {
-                count++;
-
-                progress.Report(1);
-
-                Thread.Sleep(1000);
-            }
 
             Response response = await apiResponse;
 
             Countries = response.Result != null ? (List<Country>)response.Result : new List<Country>();
 
-
             if (Countries.Count > 0)
             {
                 Task task = Task.Run(() =>
-
                 {
                     LogService.Log("********Deleting previous countries");
 
@@ -208,13 +225,19 @@
                     LogService.Log("*** Saved countries.");
                 });
             }
-        }     
-
+        }
+        /// <summary>
+        /// gets the method that fetches the values ​​from the BD tables
+        /// </summary>
         private async void LoadLocalCountries()
         {
             Countries = await DataService.GetDataCountries(progress);
         }
-
+        /// <summary>
+        /// asynchronously, for each country, download the flag, 
+        /// if it does not exist yet
+        /// </summary>
+        /// <returns></returns>
         private async Task DownloadFlags()
         {
             await Task.Run(() =>
@@ -240,7 +263,10 @@
                 }
             });
         }
-
+        /// <summary>
+        /// convert the flags to jpg and pass them to the respective folder
+        /// </summary>
+        /// <param name="Alpha3Code"></param>
         private void ConvertSvgToJpg(string Alpha3Code)
         {
             try
@@ -260,6 +286,11 @@
                 MessageBox.Show(ex.Message, "Error");
             }
         }
+        /// <summary>
+        ///  will search the images of the flags and put the value inside
+        ///  the source of the image to be shown
+        /// </summary>
+        /// <param name="currentCountry"></param>
         private void SetFlagImage(Country currentCountry)
         {
             BitmapImage bitmap = new BitmapImage();
@@ -270,12 +301,20 @@
 
             Flag.Source = bitmap;
         }
-
+        /// <summary>
+        /// when choosing the country, the gif becomes invisible;
+        /// tries to show the flag of each country;
+        /// shows the respective values ​​that each country contains, 
+        /// as well as the virus data for each one
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CbCountry_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             gif.Visibility = Visibility.Hidden;
 
             Country currentCountry = Countries[cbCountry.SelectedIndex];
+            
             List<Covid19Data> corona = Corona != null ? Corona : new List<Covid19Data>();
 
             try
@@ -286,7 +325,7 @@
             {
                 MessageBox.Show(ex.Message, "Error");
             }
-        
+
             lblCapital.Content = $"Capital: {currentCountry.Capital}";
             lblRegion.Content = $"Region: {currentCountry.Region}";
             lblSubregion.Content = $"Subregion: {currentCountry.Subregion}";
@@ -358,7 +397,12 @@
                 }
             }
         }
-
+        /// <summary>
+        /// does not allow the user to close the window, 
+        /// if the data has yet to be loaded into the database
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Close_Click(object sender, RoutedEventArgs e)
         {
             LogService.Log("*** window closing.");

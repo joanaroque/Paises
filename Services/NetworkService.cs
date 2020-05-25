@@ -5,20 +5,22 @@
 
     public static class NetworkService
     {
-        // esta classe vai ver se temos ligaçao á net, 
-        //para ir buscar os dados á API, ou se vai buscar á base de dados
-
+        /// <summary>
+        /// this class will see if we have a connection to the net,
+        ///  to fetch the data from the API, or to fetch the database
+        /// </summary>
+        /// <returns></returns>
         public static Response CheckConnection()//retorna objeto do tipo Response
         {
             var client = new WebClient();
 
             try
             {
-                //fazer um ping ao servidor da google pra ver se ha net, ou nao
+                //ping the google server to see if there is a net, or not
                 using (client.OpenRead("http://clients3.google.com/generate_204"))
                 {
                     return new Response
-                    { //corre tudo bem
+                    {
                         IsSuccess = true
                     };
                 }

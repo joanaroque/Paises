@@ -350,9 +350,13 @@
             }
 
         }
+        /// <summary>
+        /// get all data from DB
+        /// </summary>
+        /// <param name="progress"></param>
+        /// <returns>country data list</returns>
         public static async Task<List<Country>> GetDataCountries(IProgress<double> progress)
         {
-
             List<Country> countries = new List<Country>();
             List<Currency> currencies = new List<Currency>();
             List<Language> languages = new List<Language>();
@@ -487,7 +491,7 @@
             }
         }
         /// <summary>
-        /// If database as null values, show null, if not, show what it is
+        /// If database as null values, show null, if not, gets what it is
         /// </summary>
         /// <param name="reader"></param>
         /// <param name="id"></param>
@@ -496,7 +500,10 @@
         {
             return reader.IsDBNull(id) ? null : reader.GetString(id);
         }
-
+        /// <summary>
+        /// obtain country virus statistics
+        /// </summary>
+        /// <returns>country virus data list</returns>
         public static List<Covid19Data> GetDataCovid19()
         {
             List<Covid19Data> covid19 = new List<Covid19Data>();
@@ -542,6 +549,9 @@
                 connection.Close();
             }
         }
+        /// <summary>
+        /// erases data from the table
+        /// </summary>
         public static void DeleteDataCountries()
         {
             SQLiteConnection connection = new SQLiteConnection("Data Source=" + Path);
@@ -565,6 +575,9 @@
                 connection.Close();
             }
         }
+        /// <summary>
+        /// erases data from the table
+        /// </summary>
         public static void DeleteDataCovid19()
         {
             SQLiteConnection connection = new SQLiteConnection("Data Source=" + PathCovid19);

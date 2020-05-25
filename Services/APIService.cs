@@ -26,16 +26,13 @@
         {
             try
             {
-                //ProgressReport report = new ProgressReport();
+                var client = new HttpClient(); // client prepares call to a server (client is someone who asks for something)
+                client.BaseAddress = new Uri(urlBase); // "What is the address I am going to call? (Which is always a URI)"
 
-                var client = new HttpClient(); // cliente prepara chamada a um servidor (cliente é alguem que pede algo)
-
-                client.BaseAddress = new Uri(urlBase); // "Qual é a morada que eu vou chamar? (que é sempre um URI)"
-                
                 Console.WriteLine($"Fetching countries from API: {DateTime.Now}");
-                var response = await client.GetAsync(apiPath); // para este clt configurado previamente, vai buscar a info dos clints de forma assincrona
+                var response = await client.GetAsync(apiPath); // for this previously configured client, it will get the clints info asynchronously
 
-                //le a resposta e converte a de binario para string 
+                //read the answer and convert it from binary to string
                 var result = await response.Content.ReadAsStringAsync();
 
                 if (!response.IsSuccessStatusCode)
@@ -50,9 +47,6 @@
 
                 var countries = JsonConvert.DeserializeObject<List<Country>>(result, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
                 Console.WriteLine($"Deserialized countries from json: {DateTime.Now}");
-
-                //report.Percentage = (countries.Count * 100) / 125;
-                //progress.Report(report);
 
                 return new Response
                 {
@@ -74,8 +68,6 @@
         {
             try
             {
-                //ProgressReport report = new ProgressReport();
-
                 var client = new HttpClient();
 
                 client.BaseAddress = new Uri(urlBase);
@@ -95,9 +87,6 @@
                 }
 
                 var covid19 = JsonConvert.DeserializeObject<List<Covid19Data>>(result, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-
-                //report.Percentage = (covid19.Count * 100) / 125;
-                //progress.Report(report);
 
                 return new Response
                 {
