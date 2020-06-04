@@ -193,8 +193,7 @@
         /// </summary>
         /// <param name="Countries">list of countries</param>
         public static void SaveDataCountries(List<Country> Countries)
-        {
-          
+        {   
             SQLiteConnection connection = new SQLiteConnection("Data Source=" + Path);
 
             string sqlCountry = string.Format("insert into Countries (Alpha3Code, Name, Capital, Region, Subregion, Population, Gini, Flag)" +
@@ -311,7 +310,6 @@
         /// <param name="Corona">List of statistics </param>
         public static void SaveDataCovid19(List<Covid19Data> Corona)
         {
-
             SQLiteConnection connection = new SQLiteConnection("Data Source=" + PathCovid19);
 
             try
